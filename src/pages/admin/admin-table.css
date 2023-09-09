@@ -1,0 +1,315 @@
+.table-container {
+    display: flex;
+    height:50;
+    overflow: hidden;
+    ;
+}
+
+.table-wrapper {
+    flex: 10;
+    padding: 50px;
+    overflow-y: scroll;
+    background-color:whitesmoke
+
+
+}
+.table-color{
+  background-color:darkslategray
+}
+
+.table-title {
+    font-size: 30px;
+    color: palevioletred;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 3px;
+    width: max-content;
+}
+
+.table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid var(--white-color);
+    padding: 10px;
+}
+
+th {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+tr:nth-child(even) {
+    background-color: var(--white-color);
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+.table-image {
+    display: flex;
+    align-items: center;
+}
+
+.table-user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.table-username {
+    font-weight: 500;
+    font-size: 17px;
+    margin-left: 5px;
+}
+
+.table-button-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.add-order-button{
+  border: none;
+    background-color:white;
+    font-weight: bold;
+    color: black;
+    font-size: 17px;
+    padding: 5px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-around;
+  
+}
+.add-product-button{
+
+  border: none;
+  background-color:white;
+  border-radius: 20px;
+  font-weight: bold;
+  color:black;
+  font-size: 17px;
+  padding: 5px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-around;
+
+
+}
+.table-button-group button {
+    border: none;
+    background-color: var(--green-color);
+    color: var(--white-color);
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button:last-child {
+    background-color: var(--red-color);
+}
+
+.table-button-group button:first-child:hover {
+    background-color: green;
+}
+
+.table-button-group button:last-child:hover {
+    background-color: red;
+}
+
+.table-button-group button a {
+    color: var(--white-color);
+}
+
+/* Media Queries */
+@media (max-width: 720px) {
+    .table-wrapper {
+        padding: 15px;
+    }
+
+    .table-button-group {
+        flex-wrap: wrap;
+    }
+
+    .table-button-group button {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    th, td {
+        padding: 5px;
+    }
+
+    .table-image {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+/* admin-table.css */
+
+
+  
+  .button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  
+  .expanded-content {
+    margin-top: 10px;
+  }
+  
+  .expanded-content h4 {
+    margin-bottom: 10px;
+  }
+  
+  .expanded-content ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .expanded-content li {
+    margin-bottom: 10px;
+  }
+  
+  /* Styling for DataTable */
+  .dataTable {
+    font-size: 14px;
+  }
+  
+  .dataTable-header {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .dataTable-header th {
+    padding: 10px 15px;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .dataTable-row {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .dataTable-row:last-child {
+    border-bottom: none;
+  }
+  
+  .dataTable-row:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .sub-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  
+  .sub-header input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .sub-header .dataTable-pagination {
+    margin-left: 10px;
+  }
+  
+  /* Custom styles for expandable content */
+  .action-buttons {
+    display: flex;
+  }
+  
+  .action-buttons button {
+    margin-right: 5px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .action-buttons button:hover {
+    background-color: #c82333;
+  }
+  /* admin-table.css */
+.table-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.table-wrapper {
+  padding: 20px;
+  flex: 1;
+  overflow: auto;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.expanded-content {
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  font-size: 13px;
+
+}
+
+th {
+  background-color: white;
+  color: black;
+  text-align: left;
+  font-size: 13px;
+}
+
+td {
+  text-align: left;
+}
+
+.link-button {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* You might need to adjust these styles based on your project's design */
+
+  
+
+@media (max-width: 520px) {
+    .table-wrapper {
+        padding: 5px;
+    }
+    
+    th, td {
+        padding: 2px;
+    }
+}
