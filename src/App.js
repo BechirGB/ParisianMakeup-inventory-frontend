@@ -50,7 +50,7 @@ function App() {
             element={ user?.isAdmin ?<UsersTable/> : <Navigate to="/" />}
           />
               <Route
-          path="/add-user"
+          path="add-user"
           element={ user?.isAdmin ? <AddUserPage /> : <Navigate to="/" />}
         />
       </Route>

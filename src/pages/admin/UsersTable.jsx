@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AdminSidebar from "./AdminSidebar";
 import "./admin-table.css";
+
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import Button from '@mui/material/Button';
@@ -16,6 +17,8 @@ import {
 const UsersTable = () => {
   const dispatch = useDispatch();
   const { profiles, isProfileDeleted } = useSelector((state) => state.profile);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     dispatch(getAllUsersProfile());
@@ -36,27 +39,9 @@ const UsersTable = () => {
   };
   
   const handleAddNewUser = () => {
-    swal({
-      title: "Add New Order",
-      text: "Do you want to add a new order?",
-      icon: "info",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: "Add New",
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willAddNew) => {
-      if (willAddNew) {
-        window.location.href = "/add-user";
-      }
-    });
+    
+        navigate( "add-user");
+  
   };
 
 
