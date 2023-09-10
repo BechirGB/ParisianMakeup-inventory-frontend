@@ -12,13 +12,16 @@ const UpdateProduct = () => {
 
   const [updatedName, setUpdatedName] = useState("");
   const [updatedBrand, setUpdatedBrand] = useState("");
-  const [updatedBarcode, setUpdatedBarcode] = useState(""); // Add barcode state
+  const [updatedlink, setUpdatedlink] = useState(""); 
+  const [updatedsalePrice, setUpdatedsalePrice] = useState(""); 
+
 
   useEffect(() => {
     if (product) {
       setUpdatedName(product.name);
       setUpdatedBrand(product.brand);
-      setUpdatedBarcode(product.barcode); 
+      setUpdatedlink(product.link); 
+      setUpdatedsalePrice(product.sale_Price);
     }
   }, [product]);
 
@@ -27,7 +30,8 @@ const UpdateProduct = () => {
       productId,
       name: updatedName,
       brand: updatedBrand,
-      barcode: updatedBarcode,
+      link: updatedlink,
+      sale_Price:updatedsalePrice
     };
 
     dispatch(updateProduct(updatedProductData, productId))
@@ -64,11 +68,19 @@ const UpdateProduct = () => {
       />
       <input
         type="text"
-        placeholder="Product Barcode"
+        placeholder="Product Selling price"
         className="create-product-input"
 
-        value={updatedBarcode}
-        onChange={(e) => setUpdatedBarcode(e.target.value)}
+        value={updatedsalePrice}
+        onChange={(e) => setUpdatedsalePrice(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Product link"
+        className="create-product-input"
+
+        value={updatedlink}
+        onChange={(e) => setUpdatedlink(e.target.value)}
       />
       <button  className="create-product-btn" onClick={handleUpdate}>Update</button>
       </form>
