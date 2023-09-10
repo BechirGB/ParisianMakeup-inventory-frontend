@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/forms/Login";
 import { ToastContainer } from "react-toastify";
-import Profile from "./pages/profile/Profile";
 import NotFound from "./pages/not-found/NotFound";
 import { useSelector } from "react-redux";
 import UsersTable from "./pages/admin/UsersTable";
@@ -11,8 +10,7 @@ import CreateProduct from "./pages/create-product/CreateProduct";
 import OrdersTable from "./pages/admin/OrdersTable";
 import CreateOrder from "./pages/admin/createorder/Create-Order";
 import SellingordersTable from "./pages/admin/SellingOrdersTable";
-import QuantityInStocksTable from "./pages/admin/QuantityInStockTable.jsx";
-import CreateOrderr from "./pages/admin/createsellingorder/Create-SellingOrder";
+import CreateSelling from "./pages/admin/createsellingorder/Create-SellingOrder";
 import UpdateProduct from "./pages/admin/updateProduct/Update-Product";
 import CreateOrUpdateProduct from "./pages/create-product/CreateProduct";
 import UpdateOrderPage from "./pages/admin/updateorder/updateOrder";
@@ -45,74 +43,85 @@ function App() {
           />
     
    
-
-        <Route path="/profile/:id" element={<Profile />} />
-      
-        <Route path="products">
-          <Route index element={<productsPage />} />
-          
-         
-        </Route>
-      
-          <Route
-            path="users-table"
+        <Route
+            path="users-table">
+        <Route
+        index
             element={ user?.isAdmin ?<UsersTable/> : <Navigate to="/" />}
           />
               <Route
           path="/add-user"
           element={ user?.isAdmin ? <AddUserPage /> : <Navigate to="/" />}
         />
-          <Route
-            path="products-table"
+      </Route>
+          <Route 
+            path="products-table">
+            <Route 
+            index
             element={user?.isAdmin ? <ProductsTable /> : <Navigate to="/" />}
-            
           />
-           <Route
-            path="create-product"
+ <Route
+            path="add-product"
             element={user?.isAdmin ? <CreateOrUpdateProduct /> : <Navigate to="/" />}
             
           />
-            <Route
+           <Route
+  path="update-product/:productId" 
+  element={user?.isAdmin ? <UpdateProduct /> : <Navigate to="/" />}
+/>
+
+            
+          </Route>
+          
+       
+
+         
+        
+       
+          <Route path="orders-table">
+          <Route
+           index
+            element={user?.isAdmin ? <OrdersTable /> : <Navigate to="*" />}
+          />
+           <Route
+            path="create-order"
+            element={user?.isAdmin ? <CreateOrder /> : <Navigate to="*" />}
+          />
+          <Route
             path="update-order/:orderId"
             element={user?.isAdmin ? <UpdateOrderPage /> : <Navigate to="/" />}
             
           />
-              <Route
+          <Route
             path="update-orderitem/:orderItemid"
             element={user?.isAdmin ? <UpdateOrderItemPage /> : <Navigate to="/" />}
             
           />
-                 <Route
+                <Route
             path="add-newitem/:orderId"
             element={user?.isAdmin ? <AddOrderItemPage/> : <Navigate to="/" />}
             
           />
-
-         
-         <Route
-  path="/update-product/:productId" // Make sure the path matches your route structure
-  element={user?.isAdmin ? <UpdateProduct /> : <Navigate to="/" />}
-/>
-
-          <Route
-            path="orders-table"
-            element={user?.isAdmin ? <OrdersTable /> : <Navigate to="/" />}
-          />
-           <Route
-            path="create-order"
-            element={user?.isAdmin ? <CreateOrder /> : <Navigate to="/" />}
-          />
           
+          </Route>
+          
+          
+      
+      <Route  path="sellings-table">
+            <Route
+            index
+            element={user? <SellingordersTable /> : <Navigate to="/" />}
+          />
           <Route
-            path="create-sellingorder"
-            element={user? <CreateOrderr /> : <Navigate to="/" />}
+            path="add-sellingorder"
+            element={user? <CreateSelling /> : <Navigate to="/" />}
           />
              <Route
             path="update-sellingorder/:sellingorderId"
             element={user? <UpdateSellingOrderPage /> : <Navigate to="/" />}
           />
   <Route
-            path="/add-newsellingitem/:sellingorderId"
+            path="add-newsellingitem/:sellingorderId"
             element={user? <AddSellingOrderItemPage/> : <Navigate to="/" />}
             
           />
@@ -120,15 +129,10 @@ function App() {
             path="update-sellingorderitem/:sellingorderItemid"
             element={user? <UpdateSellingOrderItemPage /> : <Navigate to="/" />}
           />
-      
-      <Route
-            path="sellingorders-table"
-            element={user? <SellingordersTable /> : <Navigate to="/" />}
-          />
-        <Route
-            path="quantityInStock-table"
-            element={user? <QuantityInStocksTable /> : <Navigate to="/" />}
-          />
+
+
+            </Route>
+
         
         <Route path="*" element={<NotFound />} />
       </Routes>

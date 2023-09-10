@@ -77,7 +77,7 @@ const AdminSidebar = () => {
           </Link>
           )
         }
-          <Link to="/sellingorders-table" style={{ textDecoration: "none" }}>
+          <Link to="/sellings-table" style={{ textDecoration: "none" }}>
           <li>
             <CreditCardIcon className="icon" />
             <span> vente</span>
@@ -87,13 +87,7 @@ const AdminSidebar = () => {
 
           <p className="title">USER</p>
           
-            <Link to={`/profile/${user._id}`  }>
-            <li>
-            <AccountCircleOutlinedIcon className="icon" />
-                  
-                   <span>Profile</span>
-          </li>
-                             </Link>
+           
 
           <li onClick={logoutHandler} className="header-dropdown-item">
             <ExitToAppIcon className="icon" />
@@ -101,16 +95,7 @@ const AdminSidebar = () => {
           </li>
         </ul>
       </div>
-      <div className="bottom">
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
-        ></div>
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
-        ></div>
-      </div>
+    
     </div>
   );
 };

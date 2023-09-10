@@ -32,7 +32,7 @@ const UpdateSellingOrderItemPage = () => {
 
     dispatch(updateSellingOrderitem(orderData, sellingorderItemid));
 
-    navigate("/sellingorders-table");
+    navigate("/sellings-table");
   };
 
   useEffect(() => {

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AdminSidebar from "./AdminSidebar";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSellingorder, fetchSellingorders } from "../../redux/apiCalls/sellingorderApiCall";
@@ -20,6 +22,8 @@ const SellingordersTable = () => {
   const [searchdeliveryId, setSearchdeliveryId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { sellingorders } = useSelector((state) => state.sellingorder);
 
@@ -37,75 +41,21 @@ const SellingordersTable = () => {
   };
 
   const handleAddNewOrder = () => {
-    swal({
-      title: "Add New Order",
-      text: "Do you want to add a new order?",
-      icon: "info",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: "Add New",
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willAddNew) => {
-      if (willAddNew) {
-        window.location.href = "/create-sellingorder";
+
+       navigate("add-sellingorder");
       }
-    });
-  };
+  
 
   const handleAddNewSellingOrder = (sellingorderId) => {
-    swal({
-      title: "Add New Order",
-      text: "Do you want to add a new order?",
-      icon: "info",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: "Add New",
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willAddNew) => {
-      if (willAddNew) {
-        window.location.href = `/add-newsellingitem/${sellingorderId}`;
-      }
-    });
+
+       navigate(`add-newsellingitem/${sellingorderId}`);
+   
   };
 
   const handleUpdate = (sellingorderId) => {
-    swal({
-      title: "Update Order",
-      text: "Do you want to update this order?",
-      icon: "info",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: "Update",
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willUpdate) => {
-      if (willUpdate) {
-        window.location.href = `/update-sellingorder/${sellingorderId}`;
-      }
-    });
+    
+       navigate(`update-sellingorder/${sellingorderId}`);
+   
   };
 
   const handleDelete = (orderId) => {
@@ -250,7 +200,7 @@ const SellingordersTable = () => {
       <div className="table-wrapper">
         <DataTable
           className="table-color"
-          title="Selling Orders List"
+          title="Liste Des Vents"
           columns={columns}
           data={sellingorders}
           expandableRows
@@ -269,7 +219,7 @@ const SellingordersTable = () => {
                   variant="outlined"
                 />
                 <Button variant="outlined" onClick={handleAddNewOrder}>
-                  Add New Order
+                  Add New Selling
                 </Button>
               </div>
             </div>

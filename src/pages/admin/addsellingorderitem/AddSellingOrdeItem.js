@@ -31,7 +31,7 @@ const AddSellingOrderItemPage = () => {
 
     dispatch(AddSellingOrderItem(sellingorderData, sellingorderId));
 
-    navigate("/sellingorders-table");
+    navigate("/sellings-table");
   };
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const AddSellingOrderItemPage = () => {
 
   return (
     <section className="update-order">
-      <h1 className="update-order-deliveryId">Update Selling Order</h1>
+      <h1 className="update-order-deliveryId">Update Selling Item</h1>
       <form onSubmit={formSubmitHandler} className="update-order-form">
        
 

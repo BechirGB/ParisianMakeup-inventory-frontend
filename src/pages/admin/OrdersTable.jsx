@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import AdminSidebar from "./AdminSidebar";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
@@ -21,6 +23,8 @@ const OrdersTable = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { orders } = useSelector((state) => state.order);
 
   useEffect(() => {
@@ -29,74 +33,21 @@ const OrdersTable = () => {
  
     
   const handleUpdate = (orderId) => {
-    swal({
-      title: "Update Order",
-      text: "Do you want to update this order?",
-      icon: "info",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: "Update",
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willUpdate) => {
-      if (willUpdate) {
-        window.location.href = `/update-order/${orderId}`;
-      }
-    });
+    
+        navigate(`/orders-table/update-order/${orderId}`)
+   
   };
   const handleAddItem = (orderId) => {
-    swal({
-      title: "Add New Order",
-      text: "Do you want to add a new order?",
-      icon: "info",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: "Add New",
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willAddNew) => {
-      if (willAddNew) {
-        window.location.href = `/add-newitem/${orderId}`;
-      }
-    });
+    
+    
+    navigate (`/orders-table/add-newitem/${orderId}`);
+     
   };
 
   const handleAddNewOrder = () => {
-    swal({
-      title: "Add New Order",
-      text: "Do you want to add a new order?",
-      icon: "info",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: "Add New",
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willAddNew) => {
-      if (willAddNew) {
-        window.location.href = "/create-order";
-      }
-    });
+    
+        navigate ("/orders-table/create-order");
+   
   };
   const handleDeleteItem  = (OrderItemId) => {
   
@@ -243,7 +194,7 @@ Add
       <div className="table-wrapper">
         <DataTable
           className="table-color"
-          title="Orders List"
+          title="Liste Des Ordres D'achat"
           columns={columns}
           data={filteredOrders}
           expandableRows

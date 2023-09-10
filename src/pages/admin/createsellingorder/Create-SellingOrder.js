@@ -7,7 +7,7 @@ import { createSellingorder } from "../../../redux/apiCalls/sellingorderApiCall"
 import { RotatingLines } from "react-loader-spinner";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 
-const CreateOrderr = () => {
+const CreateSelling = () => {
   const dispatch = useDispatch();
   const { loading, issellingorderCreated } = useSelector((state) => state.sellingorder);
   const { products } = useSelector((state) => state.product);
@@ -18,7 +18,6 @@ const CreateOrderr = () => {
   ]);
   const [date ,setDate] = useState("");
 
-  // Form Submit Handler
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (deliveryId.trim() === "") return toast.error("Order deliveryId is required");
@@ -34,7 +33,6 @@ const CreateOrderr = () => {
 
     dispatch(createSellingorder(sellingorderData));
 
-    // Clear fields after creating an order
     setDeliveryId("");
     setOrderItems([{ product: "", quantity: 0,price:0 }]);
     setDate("");
@@ -47,7 +45,7 @@ const CreateOrderr = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (issellingorderCreated) {
-      navigate("/selingsorders-table");
+      navigate("/sellings-table");
     }
   }, [issellingorderCreated, navigate]);
 
@@ -133,7 +131,7 @@ const CreateOrderr = () => {
         </div>
 
         <input
-          type="date"
+          type="datetime"
           placeholder="Date Ordered"
           className="create-order-input"
           value={date}
@@ -158,4 +156,4 @@ const CreateOrderr = () => {
   );
 };
 
-export default CreateOrderr;
+export default CreateSelling;

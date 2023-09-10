@@ -23,7 +23,7 @@ const QuantityInStocksTable = () => {
   return (
     <section className="table-container">
       <div className="table-wrapper">
-        <h1 className="table-title">Quantity In Stock</h1>
+        <h1 className="table-title">Quantité dans le stock</h1>
         <TextField
           fullWidth
           label="Search by Barcode, Name, or Brand"

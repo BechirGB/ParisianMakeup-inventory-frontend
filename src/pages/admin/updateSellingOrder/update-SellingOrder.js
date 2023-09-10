@@ -30,8 +30,7 @@ const UpdateSellingOrderPage = () => {
 
     dispatch(updateSellingOrder(sellingorderData, sellingorderId));
 
-    // Redirect back to the selling orders list page after successful update
-    navigate("/sellingorders-table");
+    navigate("/sellings-table");
   };
 
   useEffect(() => {
@@ -59,7 +58,7 @@ const UpdateSellingOrderPage = () => {
 
 
         <input
-          type="date"
+          type="datetime"
           placeholder="Date"
           className="update-order-input"
           value={date}

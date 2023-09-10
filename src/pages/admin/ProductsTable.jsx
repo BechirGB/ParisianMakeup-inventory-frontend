@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import DeleteIcon from '@mui/icons-material/Delete';
-import swal from 'sweetalert';
+import { useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../../redux/apiCalls/productApiCall';
 import AdminSidebar from './AdminSidebar';
@@ -12,57 +12,22 @@ const ProductsTable = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.product);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
   const handleAddNewProduct = () => {
-    swal({
-      title: 'Add New Order',
-      text: 'Do you want to add a new order?',
-      icon: 'info',
-      buttons: {
-        cancel: {
-          text: 'Cancel',
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: 'Add New',
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willAddNew) => {
-      if (willAddNew) {
-        window.location.href = '/create-product';
-      }
-    });
+       navigate( '/products-table/add-product');
+    
   };
 
   const handleUpdate = (productId) => {
-    swal({
-      title: 'Update Product',
-      text: 'Do you want to update this product?',
-      icon: 'info',
-      buttons: {
-        cancel: {
-          text: 'Cancel',
-          value: null,
-          visible: true,
-        },
-        confirm: {
-          text: 'Update',
-          value: true,
-          closeModal: false,
-        },
-      },
-    }).then((willUpdate) => {
-      if (willUpdate) {
-        window.location.href = `/update-product/${productId}`;
-      }
-    });
+
+       navigate( `/products-table/update-product/${productId}`);
+   
   };
 
   const filteredProducts = products.filter(
@@ -106,7 +71,7 @@ const ProductsTable = () => {
       <div className="table-wrapper">
         <br />
         <DataTable
-          title="Products List"
+          title="Liste Des Produits"
           columns={columns}
           data={filteredProducts}
           pagination
