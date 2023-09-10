@@ -21,6 +21,7 @@ import UpdateOrderItemPage from "./pages/admin/updateorder/updateorderitem";
 import UpdateSellingOrderItemPage from "./pages/admin/updateSellingOrder/update-sellingOrderItem";
 import AddOrderItemPage from "./pages/admin/addorderitem/AddOrderItem";
 import AddSellingOrderItemPage from "./pages/admin/addsellingorderitem/AddSellingOrdeItem";
+import UpdateProfileModal from "./pages/profile/UpdateProfileModal";
 function App() {
   const { user } = useSelector((state) => state.auth);
 
@@ -28,13 +29,19 @@ function App() {
     <BrowserRouter>
       <ToastContainer theme="colored" position="top-center" />
      
+      
       <Routes>
-        <Route path="/" element={<Login />} />
-
         <Route
-          path="/login"
-          element={!user ? <Login /> : <Navigate to="/" />}
+          path="/"
+          element={user ? <Navigate to="/dashboard" /> : <Login />}
         />
+        <Route
+          path="/dashboard"
+          element={user ? <AdminDashboard /> : <Navigate to="/" />}
+        />
+ 
+
+
             <Route
 
         path="/dashboard"
@@ -53,6 +60,11 @@ function App() {
           path="add-user"
           element={ user?.isAdmin ? <AddUserPage /> : <Navigate to="/" />}
         />
+           <Route
+          path="update-user"
+          element={ user?.isAdmin ? <UpdateProfileModal /> : <Navigate to="/" />}
+        />
+      
       </Route>
           <Route 
             path="products-table">

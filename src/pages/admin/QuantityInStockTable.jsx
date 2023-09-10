@@ -15,7 +15,6 @@ const QuantityInStocksTable = () => {
 
   const filteredQuantities = quantities.filter(
     (quantity) =>
-      quantity.barcode.toLowerCase().includes(searchTerm.toLowerCase()) ||
       quantity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       quantity.brand.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -26,7 +25,7 @@ const QuantityInStocksTable = () => {
         <h1 className="table-title">Quantité dans le stock</h1>
         <TextField
           fullWidth
-          label="Search by Barcode, Name, or Brand"
+          label="Search by  Name, or Brand"
           variant="outlined"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -38,19 +37,20 @@ const QuantityInStocksTable = () => {
           <table className="table">
             <thead>
               <tr>
-                <th>Barcode</th>
                 <th>Name</th>
                 <th>Brand</th>
+                <th> Sale Price</th>
                 <th>Stock</th>
               </tr>
             </thead>
             <tbody>
               {filteredQuantities.map((quantity) => (
                 <tr key={quantity.id}>
-                  <td>{quantity.barcode}</td>
                   <td>{quantity.name}</td>
                   <td>{quantity.brand}</td>
+                  <td>{quantity.sale_Price}</td>
                   <td>{quantity.quantity}</td>
+                  
                 </tr>
               ))}
             </tbody>

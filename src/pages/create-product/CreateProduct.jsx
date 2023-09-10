@@ -12,8 +12,11 @@ const CreateProduct = () => {
 
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
-  const [barcode, setBarcode] = useState("");
-  const [barcodeError, setBarcodeError] = useState("");
+  const [salePrice, setSalePrice] = useState("");
+  const [link, setLink] = useState("");
+
+
+  const [salePriceError, setSalePriceError] = useState("");
   const [nameError, setNameError] = useState("");
 
   const formSubmitHandler = (e) => {
@@ -31,17 +34,18 @@ const CreateProduct = () => {
       return;
     }
 
-    if (!barcode.trim()) {
-      setBarcodeError("Product Barcode is required");
+    if (!salePrice.trim()) {
+      setSalePriceError("Product salePrice is required");
       return;
     } else {
-      setBarcodeError("");
+      setSalePriceError("");
     }
 
     const productData = {
-      barcode,
+      salePrice,
       name,
-      brand
+      brand,
+      link
 
     }
 
@@ -63,14 +67,8 @@ const CreateProduct = () => {
     <section className="create-product">
       <h1 className="create-product-name">Create New Product</h1>
       <form onSubmit={formSubmitHandler} className="create-product-form">
-        <input
-          type="text"
-          placeholder="Product Barcode"
-          className="create-product-input"
-          value={barcode}
-          onChange={(e) => setBarcode(e.target.value)}
-        />
-        {barcodeError && <p className="error-message">{barcodeError}</p>}
+        
+        {salePriceError && <p className="error-message">{salePriceError}</p>}
         <input
           type="text"
           placeholder="Product Name"
@@ -86,6 +84,21 @@ const CreateProduct = () => {
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
         />
+        <input
+          type="number"
+          placeholder="Product salePrice"
+          className="create-product-input"
+          value={salePrice}
+          onChange={(e) => setSalePrice(e.target.value)}
+        />
+         <input
+          type="text"
+          placeholder="Product link"
+          className="create-product-input"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+        />
+
         <button type="submit" className="create-product-btn">
           {loading ? (
             <RotatingLines

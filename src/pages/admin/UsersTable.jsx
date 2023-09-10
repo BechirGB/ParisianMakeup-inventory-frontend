@@ -12,7 +12,7 @@ import {
   deleteProfile,
   getAllUsersProfile,
 
-} from "../../redux/apiCalls/profileApiCall"; // Import your Redux actions
+} from "../../redux/apiCalls/profileApiCall"; 
 
 const UsersTable = () => {
   const dispatch = useDispatch();
@@ -90,11 +90,9 @@ const UsersTable = () => {
                   <Button
             variant="outlined"
             color="success"
-            size="small">                       <Link to={`/profile/${item._id}`}>View Profile</Link>
+            size="small">          <Link to={`/update-user/${item._id}`}>Update</Link>
  </Button>
-                      
-                   
-               
+                  
                     <Button
             variant="outlined"
             color="error"

@@ -32,17 +32,12 @@ const ProductsTable = () => {
 
   const filteredProducts = products.filter(
     (product) =>
-      product.barcode.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.brand.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const columns = [
-    {
-      name: 'Barcode',
-      selector: 'barcode',
-      sortable: true,
-    },
+   
     {
       name: 'Name',
       selector: 'name',
@@ -52,6 +47,14 @@ const ProductsTable = () => {
       name: 'Brand',
       selector: 'brand',
       sortable: true,
+    },
+    {
+      name: 'Link',
+      cell: (row) => (
+        <a href={row.link} target="_blank" rel="noopener noreferrer">
+          {row.link}
+        </a>
+      ),
     },
     {
       name: 'Actions',
@@ -80,7 +83,7 @@ const ProductsTable = () => {
             <div>
               <TextField
                 fullWidth
-                placeholder="Search by Barcode, Name, or Brand"
+                placeholder="Search by  Name, or Brand"
                 value={searchTerm}
                 style={{ marginTop: '16px' }}
 

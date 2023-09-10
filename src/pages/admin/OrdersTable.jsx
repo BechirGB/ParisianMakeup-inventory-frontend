@@ -3,24 +3,20 @@ import { useNavigate } from "react-router-dom";
 
 import AdminSidebar from "./AdminSidebar";
 import DataTable from "react-data-table-component";
-import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders, deleteOrder } from "../../redux/apiCalls/orderApiCall";
 import { deleteOrderItem } from "../../redux/apiCalls/orderitemApiCall";
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
 
-
 const OrdersTable = () => {
-
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,27 +26,20 @@ const OrdersTable = () => {
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
- 
-    
+
   const handleUpdate = (orderId) => {
-    
-        navigate(`/orders-table/update-order/${orderId}`)
-   
+    navigate(`/orders-table/update-order/${orderId}`);
   };
+
   const handleAddItem = (orderId) => {
-    
-    
-    navigate (`/orders-table/add-newitem/${orderId}`);
-     
+    navigate(`/orders-table/add-newitem/${orderId}`);
   };
 
   const handleAddNewOrder = () => {
-    
-        navigate ("/orders-table/create-order");
-   
+    navigate("/orders-table/create-order");
   };
-  const handleDeleteItem  = (OrderItemId) => {
-  
+
+  const handleDeleteItem = (OrderItemId) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this order!",
@@ -69,7 +58,7 @@ const OrdersTable = () => {
     });
   };
 
-  const  handleDelete = (orderId) => {
+  const handleDelete = (orderId) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this order!",
@@ -87,102 +76,96 @@ const OrdersTable = () => {
       }
     });
   };
-  
-const ExpandedContent = ({ data }) => {
-  return (
-    <div className="expanded-content">
-      <table>
-        <thead>
-          <tr>
-            <th>Barcode:</th>
-            <th>Name:</th>
-            <th>Brand:</th>
-            <th>Quantity:</th>
-            <th>Price</th>
-            <th>Discount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.orderItems.map((orderItem) => (
-            <tr key={orderItem._id}>
-              <td>{orderItem.product.barcode}</td>
-              <td>{orderItem.product.name}</td>
-              <td>{orderItem.product.brand}</td>
-              <td>{orderItem.quantity}</td>
-              <td>{orderItem.price}.00</td>
-              <td>{orderItem.discount}%</td>
-                    <td> 
-           
-          <Button  variant="outlined" startIcon={<DeleteIcon />}             onClick={() => handleDeleteItem(orderItem._id)}>
 
-</Button></td>
+  const ExpandedContent = ({ data }) => {
+    return (
+      <div className="expanded-content">
+        <table>
+          <thead>
+            <tr>
+              <th>Name:</th>
+              <th>Brand:</th>
+              <th>Quantity:</th>
+              <th>Price</th>
+              <th>Discount</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-const filteredOrders =
-Array.isArray(orders) &&
-orders.filter((order) =>
-  order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  order.orderItems.some(
-    (item) =>
-      item.product &&
-      (item.product.barcode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.product.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
-);
+          </thead>
+          <tbody>
+            {data.orderItems.map((orderItem) => (
+              <tr key={orderItem._id}>
+                <td>{orderItem.product.name}</td>
+                <td>{orderItem.product.brand}</td>
+                <td>{orderItem.quantity}</td>
+                <td>{orderItem.price}.00</td>
+                <td>{orderItem.discount}%</td>
+                <td>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDeleteItem(orderItem._id)}
+                  ></Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const filteredOrders =
+    Array.isArray(orders) &&
+    orders.filter((order) =>
+      order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.orderItems.some(
+        (item) =>
+          item.product &&
+          (
+            item.product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
+    );
+
   const columns = [
     {
       name: "Store",
-      selector: "store",
-      sortable: true,
+      selector: (row) => row.store,
     },
     {
       name: "Total Price",
-      selector: "totalPrice",
-      sortable: true,
+      selector: (row) => row.totalPrice,
     },
     {
       name: "User",
-      selector: "user.username",
-      sortable: true,
+      selector: (row) => row.user.username,
     },
-
     {
       name: "Date Ordered",
-      selector: "dateOrdered",
-      sortable: true,
-      format: (row) => formatDate(row.dateOrdered),
+      selector: (row) => formatDate(row.dateOrdered),
     },
     {
       name: "Actions",
       cell: (row) => (
-           <div >
-       
+        <div>
           <Button
-            variant="outlined" color="error"  size="small"
+            variant="outlined"
+            color="error"
+            size="small"
             startIcon={<DeleteIcon />}
             onClick={() => handleDelete(row.id)}
           >
             Delete
           </Button>
           <Button
-            variant="outlined"   color="success" size="small"
+            variant="outlined"
+            color="success"
+            size="small"
             onClick={() => handleUpdate(row.id)}
           >
             Update
           </Button>
-
-<Button variant="outlined" size="small" onClick={() => handleAddItem(row.id)}
->
-Add
-</Button>
-          
-          
-        
+          <Button variant="outlined" size="small" onClick={() => handleAddItem(row.id)}>
+            Add
+          </Button>
         </div>
       ),
     },
@@ -202,12 +185,12 @@ Add
           expandOnRowClicked
           pagination
           subHeader
- subHeaderComponent={
+          subHeaderComponent={
             <div className="subheader">
               <div className="subheader-content">
                 <TextField
                   fullWidth
-                  placeholder="Search by Store, Barcode, or Product Name"
+                  placeholder="Search by Store,  or Product Name"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   variant="outlined"
@@ -218,7 +201,6 @@ Add
               </div>
             </div>
           }
-
         />
       </div>
     </section>
@@ -226,6 +208,7 @@ Add
 };
 
 export default OrdersTable;
+
 
 
 

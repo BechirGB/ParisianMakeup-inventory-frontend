@@ -102,7 +102,6 @@ const SellingordersTable = () => {
         <table>
           <thead>
             <tr>
-              <th>Barcode:</th>
               <th>Name:</th>
               <th>Brand:</th>
               <th>Quantity:</th>
@@ -113,7 +112,6 @@ const SellingordersTable = () => {
           <tbody>
             {data.sellingorderItems.map((orderItem) => (
               <tr key={orderItem._id}>
-                <td>{orderItem.product.barcode}</td>
                 <td>{orderItem.product.name}</td>
                 <td>{orderItem.product.brand}</td>
                 <td>{orderItem.quantity}</td>
@@ -140,28 +138,24 @@ const SellingordersTable = () => {
   const columns = [
     {
       name: "deliveryId",
-      selector: "deliveryId",
+      selector: (row) => row.deliveryId,
       sortable: true,
     },
     {
       name: "Total Price",
-      selector: "totalPrice",
+      selector: (row) => row.totalPrice,
       sortable: true,
     },
     {
       name: "User",
-      selector: "user.username",
+      selector: (row) => row.user.username,
       sortable: true,
     },
-
-
     {
       name: "Date",
-      selector: "date",
+      selector: (row) => formatDate(row.date),
       sortable: true,
-      format: (row) => formatDate(row.date),
     },
-
     {
       name: "Actions",
       cell: (row) => (
@@ -213,7 +207,7 @@ const SellingordersTable = () => {
               <div className="subheader-content">
                 <TextField
                   fullWidth
-                  placeholder="Search by Store, Barcode, or Product Name"
+                  placeholder="Search by Store, or Product Name"
                   value={searchdeliveryId}
                   onChange={(e) => setSearchdeliveryId(e.target.value)}
                   variant="outlined"

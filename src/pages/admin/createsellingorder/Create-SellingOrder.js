@@ -131,7 +131,7 @@ const CreateSelling = () => {
         </div>
 
         <input
-          type="datetime"
+          type="datetime-local"
           placeholder="Date Ordered"
           className="create-order-input"
           value={date}
