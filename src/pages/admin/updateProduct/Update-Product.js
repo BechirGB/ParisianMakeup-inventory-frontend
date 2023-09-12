@@ -35,11 +35,9 @@ const UpdateProduct = () => {
     };
 
     dispatch(updateProduct(updatedProductData, productId))
-      .then(() => {
         navigate("/products-table"); 
-      })
-      .catch((error) => {
-      });
+   
+    
   };
 
   useEffect(() => {

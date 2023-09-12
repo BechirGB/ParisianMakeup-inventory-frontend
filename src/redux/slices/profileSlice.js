@@ -17,9 +17,7 @@ const profileSlice = createSlice({
       state.addProfile = action.payload;
 
     },
-    setProfilePhoto(state, action) {
-      state.profile.profilePhoto = action.payload;
-    },
+
     updateProfile(state,action) {
       state.profile = action.payload;
     },
@@ -35,6 +33,9 @@ const profileSlice = createSlice({
     },
     clearIsProfileDeleted(state) {
       state.isProfileDeleted = false;
+    },
+    enableDisableUser(state, action) {
+      state.enableDisableUser=action.payload
     },
     setUserCount(state,action) {
       state.usersCount = action.payload;

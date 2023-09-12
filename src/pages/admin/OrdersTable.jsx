@@ -122,6 +122,8 @@ const OrdersTable = () => {
           item.product &&
           (
             item.product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+            
+            
       )
     );
 

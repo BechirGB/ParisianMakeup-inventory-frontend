@@ -3,18 +3,18 @@ import "./create-product.css";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createProduct } from "../../redux/apiCalls/productApiCall";
+import { createProduct } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, isProductCreated, error } = useSelector((state) => state.product);
 
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [salePrice, setSalePrice] = useState("");
   const [link, setLink] = useState("");
-
 
   const [salePriceError, setSalePriceError] = useState("");
   const [nameError, setNameError] = useState("");
@@ -45,14 +45,11 @@ const CreateProduct = () => {
       salePrice,
       name,
       brand,
-      link
-
-    }
+      link,
+    };
 
     dispatch(createProduct(productData));
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (isProductCreated) {
@@ -67,7 +64,6 @@ const CreateProduct = () => {
     <section className="create-product">
       <h1 className="create-product-name">Create New Product</h1>
       <form onSubmit={formSubmitHandler} className="create-product-form">
-        
         {salePriceError && <p className="error-message">{salePriceError}</p>}
         <input
           type="text"
@@ -91,7 +87,7 @@ const CreateProduct = () => {
           value={salePrice}
           onChange={(e) => setSalePrice(e.target.value)}
         />
-         <input
+        <input
           type="text"
           placeholder="Product link"
           className="create-product-input"
