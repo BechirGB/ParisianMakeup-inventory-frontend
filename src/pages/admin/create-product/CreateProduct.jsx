@@ -13,10 +13,10 @@ const CreateProduct = () => {
 
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
-  const [salePrice, setSalePrice] = useState("");
+  const [sale_Price, setsale_Price] = useState("");
   const [link, setLink] = useState("");
 
-  const [salePriceError, setSalePriceError] = useState("");
+  const [sale_PriceError, setsale_PriceError] = useState("");
   const [nameError, setNameError] = useState("");
 
   const formSubmitHandler = (e) => {
@@ -34,18 +34,18 @@ const CreateProduct = () => {
       return;
     }
 
-    if (!salePrice.trim()) {
-      setSalePriceError("Product salePrice is required");
+    if (!sale_Price.trim()) {
+      setsale_PriceError("Product sale_Price is required");
       return;
     } else {
-      setSalePriceError("");
-    }
+      setsale_PriceError("");
+    } 
 
     const productData = {
-      salePrice,
       name,
       brand,
       link,
+      sale_Price
     };
 
     dispatch(createProduct(productData));
@@ -64,7 +64,7 @@ const CreateProduct = () => {
     <section className="create-product">
       <h1 className="create-product-name">Create New Product</h1>
       <form onSubmit={formSubmitHandler} className="create-product-form">
-        {salePriceError && <p className="error-message">{salePriceError}</p>}
+        {sale_PriceError && <p className="error-message">{sale_PriceError}</p>}
         <input
           type="text"
           placeholder="Product Name"
@@ -82,10 +82,10 @@ const CreateProduct = () => {
         />
         <input
           type="number"
-          placeholder="Product salePrice"
+          placeholder="Product sale_Price"
           className="create-product-input"
-          value={salePrice}
-          onChange={(e) => setSalePrice(e.target.value)}
+          value={sale_Price}
+          onChange={(e) => setsale_Price(e.target.value)}
         />
         <input
           type="text"
