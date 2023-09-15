@@ -15,9 +15,10 @@
 }
 
 .create-order-form {
-    width: 700px;
+    width: 500px;
+    margin-top: 50px;
+    margin-left: 200px;
     display: flex;
-    flex-direction: column;
 }
 
 .create-order-input,

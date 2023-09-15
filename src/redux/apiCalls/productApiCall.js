@@ -49,9 +49,9 @@ export function createProduct(newProduct) {
 export function fetchSingleProduct(productId) {
   return async (dispatch) => {
     try {
-      console.log(productId);
       const { data } = await request.get(`/api/products/${productId}`);
       dispatch(productActions.setproducts(data));
+
     } catch (error) {
       toast.error(error.response.data.message);
     }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import AdminSidebar from "../AdminSidebar";
 import { updateOrder, fetchSingleOrder } from "../../../redux/apiCalls/orderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
@@ -45,7 +46,9 @@ const UpdateOrderPage = () => {
   }, [isOrderUpdated, navigate]);
 
   return (
-    <section className="update-order">
+    <section className="table-container">
+            <AdminSidebar />
+
       <h1 className="update-order-store">Update Order</h1>
       <form onSubmit={formSubmitHandler} className="update-order-form">
         <input

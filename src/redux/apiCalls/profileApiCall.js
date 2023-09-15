@@ -112,7 +112,6 @@ export function addUserProfile(user) {
     }
   }
 }
-// Get All Users Profile (for admin dashboard)
 export function getAllUsersProfile() {
   return async (dispatch, getState) => {
     try {

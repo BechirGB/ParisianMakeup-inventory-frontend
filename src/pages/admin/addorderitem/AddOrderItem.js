@@ -82,7 +82,7 @@ const AddOrderItemPage = () => {
               }}
             />
             <input
-              type="number"
+              type="decimal"
               placeholder={`Discount ${index + 1}`}
               className="create-order-input"
               value={item.discount}
@@ -93,7 +93,7 @@ const AddOrderItemPage = () => {
               }}
             />
                <input
-              type="number"
+              type="decimal"
               placeholder={`Price ${index + 1}`}
               className="create-order-input"
               value={item.price}

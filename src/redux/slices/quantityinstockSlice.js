@@ -4,14 +4,14 @@ const QuantityInStockSlice = createSlice({
   name: "quantityinstock", 
   initialState: {
     quantities: [], 
-    quantity:[],
+    tn_quantities:[],
   },
   reducers: {
     setQuantities(state, action) {
       state.quantities = action.payload; 
     },
-    setQuantity(state,action){
-      state.quantity= action.payload
+    setTnQuantities(state,action){
+      state.tn_quantities= action.payload
     }
   },
 });

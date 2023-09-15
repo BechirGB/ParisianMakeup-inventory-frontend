@@ -1,82 +1,111 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../../forms/form.css";
-import { useDispatch, useSelector } from "react-redux";
+import AdminSidebar from "../AdminSidebar";
+
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { useDispatch } from "react-redux";
 import { addUserProfile } from "../../../redux/apiCalls/profileApiCall";
-import swal from "sweetalert";
 
 const AddUserPage = () => {
-    const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    isAdmin: false, // Default role is user
+  });
 
-    // Form Submit Handler
-    const formSubmitHandler = (e) => {
-        e.preventDefault();
-        if(username.trim() === "") return toast.error("Username is required");
-        if(email.trim() === "") return toast.error("Email is required");
-        if(password.trim() === "") return toast.error("Password is required");
+  const handleChange = (e) => {
+    const { name, value, checked, type } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
 
-        dispatch(addUserProfile({ username, email, password }))
-        navigate('/users-table')
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await dispatch(addUserProfile(formData));
+
+      toast.success("User registered successfully");
+      navigate("/users-table");
+    } catch (error) {
+      toast.error(error.message);
     }
+  };
 
+  return (
+    <section className="table-container">
+    <AdminSidebar />
+      <h1 className="form-title">Create new account</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="input-container">
+          <label htmlFor="username" className="form-label">
+            Username
+          </label>
+          <TextField
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="input-container">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <TextField
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="input-container">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <TextField
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="input-container">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={formData.isAdmin}
+                onChange={handleChange}
+                name="isAdmin"
+                color="primary"
+              />
+            }
+            label="Admin"
+          />
+        </div>
+        <Button variant="contained" type="submit" className="login-button">
+          Register
+        </Button>
+      </form>
+    </section>
+  );
+};
 
- 
-
-
-    return ( 
-        <section className="form-container">
-            <h1 className="form-title">Create new account</h1>
-            <form onSubmit={formSubmitHandler} >
-                <div className="input-container">
-                    <label htmlFor="username" className="form-label">
-                        Username
-                    </label>
-                    <input 
-                     type="text" 
-                     id="username"
-                     placeholder="Enter your username"
-                     value={username}
-                     onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div className="input-container">
-                    <label htmlFor="email" className="form-label">
-                        Email
-                    </label>
-                    <input 
-                     type="email" 
-                     id="email"
-                     placeholder="Enter your email"
-                     value={email}
-                     onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className="input-container">
-                    <label htmlFor="password" className="form-label">
-                      Password
-                    </label>
-                    <input 
-                     type="password" 
-                     className="form-input"
-                     id="password"
-                     placeholder="Enter your password"
-                     value={password}
-                     onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <button type="submit" className="login-button">
-                    Register
-                </button>
-            </form>
-            
-        </section>
-     );
-}
- 
 export default AddUserPage;

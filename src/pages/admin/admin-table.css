@@ -8,8 +8,7 @@
 .table-wrapper {
     flex: 10;
     padding: 50px;
-    overflow-y: scroll;
-    background-color:whitesmoke
+    background-color:white
 
 
 }

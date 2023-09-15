@@ -11,7 +11,7 @@ import OrdersTable from "./pages/admin/OrdersTable";
 import CreateOrder from "./pages/admin/createorder/Create-Order";
 import SellingordersTable from "./pages/admin/SellingOrdersTable";
 import CreateSelling from "./pages/admin/createsellingorder/Create-SellingOrder";
-import UpdateProduct from "./pages/admin/updateProduct/Update-Product";
+import EditProduct from "./pages/admin/updateProduct/Update-Product";
 import UpdateOrderPage from "./pages/admin/updateorder/updateOrder";
 import UpdateSellingOrder from "./pages/admin/updateSellingOrder/update-SellingOrder";
 import AddUserPage from "./pages/admin/adduser/Add-user";
@@ -79,7 +79,7 @@ function App() {
           />
            <Route
             path="update-product/:productId" 
-             element={user?.isAdmin ? <UpdateProduct /> : <Navigate to="/unauthorized-page" />}
+             element={user?.isAdmin ? <EditProduct /> : <Navigate to="/unauthorized-page" />}
              />
 
             
@@ -105,7 +105,7 @@ function App() {
             
           />
           <Route
-            path="update-orderitem/:orderItemid"
+            path="update-orderitem/:orderItemId"
             element={user?.isAdmin ? <UpdateOrderItemPage /> : <Navigate to="/unauthorized-page" />}
             
           />

@@ -30,12 +30,15 @@ const ProductsTable = () => {
    
   };
 
-  const filteredProducts = 
-    Array.isArray(products) &&
-    products.filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts =
+  Array.isArray(products) && products.length > 0
+    ? products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+
 
   const columns = [
    
@@ -48,6 +51,12 @@ const ProductsTable = () => {
       name: 'Brand',
       selector: 'brand',
       sortable: true,
+    },
+    {
+      name: 'Sale Price',
+      selector: 'sale_Price',
+      sortable: true,
+
     },
     {
       name: 'Link',

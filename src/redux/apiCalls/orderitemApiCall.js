@@ -12,12 +12,11 @@ export function fetchOrderitems() {
     }
   };
 }
-export function fetchSingleOrderitem(orderItemid) {
+export function fetchSingleOrderItem(orderItemId) {
   return async (dispatch) => {
     try {
-      const { data } = await request.get(`/api/orderitems/${orderItemid}`);
+      const { data } = await request.get(`/api/orderitems/${orderItemId}`);
       dispatch(OrderItemActions.setOrderItem(data));
-      console.log(data)
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -26,10 +25,10 @@ export function fetchSingleOrderitem(orderItemid) {
 
 
 
-export function updateOrderitem(neworderitem,orderItemid) {
+export function updateOrderItem(neworderitem,orderItemId) {
     return async (dispatch,getState) => {
       try {
-        const { data } = await request.put(`/api/orderitems/${orderItemid}`,neworderitem, {
+        const { data } = await request.put(`/api/orderitems/${orderItemId}`,neworderitem, {
           headers: {
             Authorization: "Bearer " + getState().auth.user.token,
           }

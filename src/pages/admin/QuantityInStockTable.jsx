@@ -41,6 +41,7 @@ const QuantityInStocksTable = () => {
                 <th>Brand</th>
                 <th> Sale Price</th>
                 <th>Stock</th>
+                <th> Stock In Tunisia</th>
               </tr>
             </thead>
             <tbody>
@@ -50,6 +51,8 @@ const QuantityInStocksTable = () => {
                   <td>{quantity.brand}</td>
                   <td>{quantity.sale_Price}</td>
                   <td>{quantity.quantity}</td>
+                  <td>{quantity.quantity_in_tunisia}</td>
+
                   
                 </tr>
               ))}

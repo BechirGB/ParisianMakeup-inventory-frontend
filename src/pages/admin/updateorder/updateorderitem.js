@@ -1,113 +1,161 @@
-
-
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateOrderitem, fetchSingleOrderitem } from "../../../redux/apiCalls/orderitemApiCall";
+import {
+  updateOrderItem,
+  fetchSingleOrderItem,
+} from "../../../redux/apiCalls/orderitemApiCall";
+import AdminSidebar from "../AdminSidebar";
+
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Grid,
+} from "@mui/material";
 
 const UpdateOrderItemPage = () => {
-  const { orderItemid } = useParams();
+  const { orderItemId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, isOrderItemUpdated } = useSelector((state) => state.orderitem);
+  const { loading, isOrderUpdated,OrderItems } = useSelector((state) => state.order);
   const { products } = useSelector((state) => state.product);
 
-  const [quantity, setQuantity] = useState("");
-  const [orderItems, setOrderItems] = useState([]);
+  const [orderItem, setOrderItem] = useState({
+    product: "",
+    quantity: 0,
+    price: 0,
+    discount: 0,
+    quantity_in_tunisia: 0,
+  });
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    if (quantity.trim() === "") return toast.error("Order quantity is required");
 
-    // Prepare the order items data
-    const orderData = {
-      quantity,
-      orderItems,
-    };
+    if (!orderItem.product || orderItem.quantity === 0) {
+      return toast.error("Product and quantity are required");
+    }
 
-    dispatch(updateOrderitem(orderData, orderItemid));
-
+    dispatch(updateOrderItem(orderItem, orderItemId));
     navigate("/orders-table");
   };
+  useEffect(() => {
+    if (OrderItems) {
+      orderItem.quantity= OrderItems.quantity;
+      
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(fetchProducts());
-      await dispatch(fetchSingleOrderitem(orderItemid));
-    };
+    dispatch(fetchSingleOrderItem(orderItemId));
+    dispatch(fetchProducts());
+  }, [dispatch, orderItemId]);
 
-    fetchData();
-  }, [dispatch, orderItemid]);
-
-  const handleOrderItemChange = (index, field, value) => {
-    const updatedOrderItems = [...orderItems];
-    updatedOrderItems[index][field] = value;
-    setOrderItems(updatedOrderItems);
-  };
-
-  const calculateUpdatedTotalPrice = () => {
-    return orderItems.reduce((totalPrice, item) => {
-      const product = products.find((p) => p._id === item.product);
-      if (product) {
-        totalPrice += item.quantity * item.price - item.discount;
-      }
-      return totalPrice;
-    }, 0);
-  };
+  useEffect(() => {
+    if (isOrderUpdated) {
+      navigate("/orders-table");
+    }
+  }, [isOrderUpdated, navigate]);
 
   return (
-    <section className="update-order">
-      <h1 className="update-order-quantity">Update Order Item</h1>
-      <form onSubmit={formSubmitHandler} className="update-order-form">
-        <input
-          type="number"
-          placeholder="Order quantity"
-          className="create-order-input"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-        />
-
-        {orderItems.map((item, index) => (
-          <div key={index}>
-            <select
-              value={item.product}
-              onChange={(e) => handleOrderItemChange(index, "product", e.target.value)}
-              className="create-order-input"
-            >
-              <option disabled value="">
-                Select A product
-              </option>
-              {products.map((product) => (
-                <option key={product._id} value={product._id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-
-            <input
+    <section className="table-container">
+      <AdminSidebar />
+    <Container>
+      <Typography variant="h4" align="center" gutterBottom>
+        Update Order Item
+      </Typography>
+      <form onSubmit={formSubmitHandler}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Select a product</InputLabel>
+              <Select
+                value={orderItem.product}
+                onChange={(e) =>
+                  setOrderItem({ ...orderItem, product: e.target.value })
+                }
+                label="Select a product"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {products.map((product) => (
+                  <MenuItem key={product._id} value={product._id}>
+                    {product.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
               type="number"
-              placeholder={`Price ${index + 1}`}
-              className="create-order-input"
-              value={item.price}
-              onChange={(e) => handleOrderItemChange(index, "price", e.target.value)}
+              label="Quantity"
+              variant="outlined"
+              fullWidth
+              value={orderItem.quantity}
+              onChange={(e) =>
+                setOrderItem({ ...orderItem, quantity: e.target.value })
+              }
             />
-
-            <input
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              type="decimal"
+              label="Price"
+              variant="outlined"
+              fullWidth
+              value={orderItem.price}
+              onChange={(e) =>
+                setOrderItem({ ...orderItem, price: e.target.value })
+              }
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              type="decimal"
+              label="Discount"
+              variant="outlined"
+              fullWidth
+              value={orderItem.discount}
+              onChange={(e) =>
+                setOrderItem({ ...orderItem, discount: e.target.value })
+              }
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
               type="number"
-              placeholder="Number Ordered"
-              className="create-order-input"
-              value={item.discount}
-              onChange={(e) => handleOrderItemChange(index, "discount", e.target.value)}
+              label="Quantity in Tunisia"
+              variant="outlined"
+              fullWidth
+              value={orderItem.quantity_in_tunisia}
+              onChange={(e) =>
+                setOrderItem({
+                  ...orderItem,
+                  quantity_in_tunisia: e.target.value,
+                })
+              }
             />
-          </div>
-        ))}
+          </Grid>
+        </Grid>
 
-        {/* Form fields */}
-        <button type="submit" className="update-order-btn">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          className="update-order-btn"
+        >
           {loading ? (
             <RotatingLines
               strokeColor="white"
@@ -119,13 +167,18 @@ const UpdateOrderItemPage = () => {
           ) : (
             "Update"
           )}
-        </button>
+        </Button>
       </form>
+    </Container>
     </section>
+
   );
 };
 
 export default UpdateOrderItemPage;
+
+
+
 
 
 

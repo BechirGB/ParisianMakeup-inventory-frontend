@@ -50,17 +50,7 @@ export function getOrderCount() {
     }
   };
 }
-export function getOrderTotalPurchases() {
-  return async (dispatch) => {
-    try {
-      const { data } = await request.get(`/api/orders/totalpurchases`);
-      dispatch(OrderActions.setOrdersTotalPurchases(data));
-      console.log(data)
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-}
+
 // Update order
 export function updateOrder(neworder,orderId) {
   return async (dispatch,getState) => {

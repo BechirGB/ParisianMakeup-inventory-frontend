@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./create-product.css";
+import AdminSidebar from "../AdminSidebar";
+
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
+import TextField from "@mui/material/TextField"; // Import MUI TextField
+import Autocomplete from "@mui/material/Autocomplete"; // Import MUI Autocomplete
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
@@ -39,13 +43,13 @@ const CreateProduct = () => {
       return;
     } else {
       setsale_PriceError("");
-    } 
+    }
 
     const productData = {
       name,
       brand,
       link,
-      sale_Price
+      sale_Price,
     };
 
     dispatch(createProduct(productData));
@@ -61,35 +65,34 @@ const CreateProduct = () => {
   }, [isProductCreated, navigate, error]);
 
   return (
-    <section className="create-product">
+    <section className="table-container">
+          <AdminSidebar />
+
       <h1 className="create-product-name">Create New Product</h1>
       <form onSubmit={formSubmitHandler} className="create-product-form">
         {sale_PriceError && <p className="error-message">{sale_PriceError}</p>}
-        <input
-          type="text"
-          placeholder="Product Name"
+        <TextField
+          label="Product Name"
           className="create-product-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         {nameError && <p className="error-message">{nameError}</p>}
-        <input
-          type="text"
-          placeholder="Product Brand"
+        <TextField
+          label="Product Brand"
           className="create-product-input"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
         />
-        <input
+        <TextField
+          label="Product sale_Price"
           type="number"
-          placeholder="Product sale_Price"
           className="create-product-input"
           value={sale_Price}
           onChange={(e) => setsale_Price(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Product link"
+        <TextField
+          label="Product link"
           className="create-product-input"
           value={link}
           onChange={(e) => setLink(e.target.value)}

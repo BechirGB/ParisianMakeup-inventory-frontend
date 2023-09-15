@@ -19,9 +19,8 @@ const formatDate = (dateString) => {
 };
 
 const SellingordersTable = () => {
-  const [searchdeliveryId, setSearchdeliveryId] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -31,14 +30,7 @@ const SellingordersTable = () => {
     dispatch(fetchSellingorders());
   }, [dispatch]);
 
-  const handleSearchByDate = () => {
-    const filteredOrders = sellingorders.filter((order) => {
-      const orderDate = new Date(order.date);
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      return orderDate >= start && orderDate <= end;
-    });
-  };
+  
 
   const handleAddNewOrder = () => {
 
@@ -134,6 +126,24 @@ const SellingordersTable = () => {
       </div>
     );
   };
+  
+  const filteredOrders = Array.isArray(sellingorders) && sellingorders.length > 0
+  ? sellingorders.filter((sellingorder) => {
+      const searchTermLower = searchTerm.toLowerCase();
+      const orderItems = sellingorder.orderItems;
+
+      return (
+        sellingorder.deliveryId ||
+        orderItems.some((item) =>
+          item.product &&
+          (
+            item.product.name.toLowerCase().includes(searchTermLower) ||
+            item.product.brand.toLowerCase().includes(searchTermLower)
+          )
+        )
+      );
+    })
+  : [];
 
   const columns = [
     {
@@ -196,7 +206,7 @@ const SellingordersTable = () => {
           className="table-color"
           title="Liste Des Vents"
           columns={columns}
-          data={sellingorders}
+          data={filteredOrders}
           expandableRows
           expandableRowsComponent={ExpandedContent}
           expandOnRowClicked
@@ -207,9 +217,9 @@ const SellingordersTable = () => {
               <div className="subheader-content">
                 <TextField
                   fullWidth
-                  placeholder="Search by Store, or Product Name"
-                  value={searchdeliveryId}
-                  onChange={(e) => setSearchdeliveryId(e.target.value)}
+                  placeholder="Search by delivery id, or Product Name"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   variant="outlined"
                 />
                 <Button variant="outlined" onClick={handleAddNewOrder}>
