@@ -53,6 +53,7 @@ const CreateProduct = () => {
     };
 
     dispatch(createProduct(productData));
+    navigate("/products-table")
   };
 
   useEffect(() => {
