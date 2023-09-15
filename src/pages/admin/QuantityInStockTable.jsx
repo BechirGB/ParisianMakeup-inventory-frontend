@@ -13,11 +13,14 @@ const QuantityInStocksTable = () => {
     dispatch(getQuantityInStock());
   }, [dispatch]);
 
-  const filteredQuantities = quantities.filter(
+  const filteredQuantities = Array.isArray(quantities)
+  &&quantities.length>0 ?
+  
+  quantities.filter(
     (quantity) =>
       quantity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       quantity.brand.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      )   : [];
 
   return (
     <section className="table-container">
