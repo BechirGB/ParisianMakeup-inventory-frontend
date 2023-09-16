@@ -4,10 +4,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import IconButton from "@mui/material/IconButton"; 
 import EditIcon from "@mui/icons-material/Edit";
-
 import AddIcon from '@mui/icons-material/Add'; 
 import { useNavigate } from 'react-router-dom';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../../redux/apiCalls/productApiCall';
 import AdminSidebar from './AdminSidebar';
@@ -30,14 +28,13 @@ const ProductsTable = () => {
     navigate(`/products-table/update-product/${productId}`);
   };
 
-  const filteredProducts =
-    Array.isArray(products) && products.length > 0
-      ? products.filter(
-          (product) =>
-            product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.brand.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      : [];
+  const filteredProducts = Array.isArray(products) && products.length > 0
+    ? products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
 
   const columns = [
     {
@@ -72,10 +69,8 @@ const ProductsTable = () => {
           size="small"
           onClick={() => handleUpdate(row._id)}
         >
-                    <EditIcon />
-
-                   </IconButton>
-
+          <EditIcon />
+        </IconButton>
       ),
     },
   ];
@@ -84,7 +79,6 @@ const ProductsTable = () => {
     <section className="table-container">
       <AdminSidebar />
       <div className="table-wrapper">
-
         <DataTable
           title="Liste Des Produits"
           columns={columns}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AdminSidebar from "../AdminSidebar";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchSingleProduct, updateProduct } from "../../../redux/apiCalls/productApiCall";
+import { fetchSingleProduct,getAllProducts, updateProduct } from "../../../redux/apiCalls/productApiCall";
 import { TextField, Button } from "@mui/material"; // Import MUI TextField and Button
 
 const EditProduct = () => {
@@ -33,10 +33,17 @@ const EditProduct = () => {
       link: updatedlink,
       sale_Price: updatedsalePrice,
     };
-
-    dispatch(updateProduct(updatedProductData, productId));
-    navigate("/products-table");
+  
+    dispatch(updateProduct(updatedProductData, productId))
+      .then(() => {
+        dispatch(getAllProducts());
+        navigate("/products-table");
+      })
+      .catch((error) => {
+        console.error("Error updating product:", error);
+      });
   };
+  
 
   useEffect(() => {
     dispatch(fetchSingleProduct(productId));

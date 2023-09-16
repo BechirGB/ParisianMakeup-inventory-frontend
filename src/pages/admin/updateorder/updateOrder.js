@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Typography, TextField, Button } from "@mui/material";
 import AdminSidebar from "../AdminSidebar";
-import { updateOrder, fetchSingleOrder } from "../../../redux/apiCalls/orderApiCall";
+import { updateOrder, fetchOrders,fetchSingleOrder } from "../../../redux/apiCalls/orderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
 
@@ -29,7 +29,15 @@ const UpdateOrderPage = () => {
       dateOrdered,
     };
 
-    dispatch(updateOrder(orderData, orderId));
+    dispatch(updateOrder(orderData, orderId))
+     .then(() => {
+      dispatch(fetch());
+      navigate("/orders-table");
+    })
+    .catch((error) => {
+      console.error("Error updating product:", error);
+    });
+
 
     navigate("/orders-table");
   };
