@@ -6,7 +6,7 @@ import AdminSidebar from "../AdminSidebar";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createOrder } from "../../../redux/apiCalls/orderApiCall";
+import { createOrder,fetchOrders } from "../../../redux/apiCalls/orderApiCall";
 import { RotatingLines } from "react-loader-spinner";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { TextField, Button,  Container,
@@ -62,12 +62,17 @@ const CreateOrder = () => {
       dateOrdered,
     };
 
-    dispatch(createOrder(orderData));
     setOrderId("");
     setStore("");
     setOrderItems([{ product: "", price :"",quantity: "", discount: "" }]);
     setDateOrdered("");
-    navigate("/orders-table");
+    dispatch(createOrder(orderData)).then(()=>{
+      dispatch(fetchOrders());
+      navigate("/orders-table");
+
+
+    })
+
 
 
   };

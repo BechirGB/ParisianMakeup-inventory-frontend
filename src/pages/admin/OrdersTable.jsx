@@ -80,10 +80,12 @@ const OrdersTable = () => {
         swal("Poof! The order has been deleted!", {
           icon: "success",
         });
+      
       } else {
         swal("The order is safe!");
       }
     });
+    
   };
 
   const ExpandedContent = ({ data }) => {

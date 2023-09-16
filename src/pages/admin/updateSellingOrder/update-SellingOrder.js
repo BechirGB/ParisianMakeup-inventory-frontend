@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateSellingOrder, fetchSingleSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
+import { updateSellingOrder, fetchSellingorders,fetchSingleSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
 import "./update-Sellingorder.css";
@@ -28,11 +28,12 @@ const UpdateSellingOrderPage = () => {
   date,
     };
 
-    dispatch(updateSellingOrder(sellingorderData, sellingorderId));
+    dispatch(updateSellingOrder(sellingorderData, sellingorderId)).then(() => {
+      dispatch(fetchSellingorders());
 
     navigate("/sellings-table");
+  })
   };
-
   useEffect(() => {
     dispatch(fetchSingleSellingorder(sellingorderId));
     dispatch(fetchProducts());

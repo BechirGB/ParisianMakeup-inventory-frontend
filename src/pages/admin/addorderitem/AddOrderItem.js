@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchSingleOrder } from "../../../redux/apiCalls/orderApiCall";
+import { fetchSingleOrder,fetchOrders } from "../../../redux/apiCalls/orderApiCall";
 import {AddOrderItem} from "../../../redux/apiCalls/orderitemApiCall"
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
@@ -27,8 +27,9 @@ const AddOrderItemPage = () => {
       orderItems,
     };
 
-    dispatch(AddOrderItem(orderData,orderId));
-    navigate("/orders-table");
+    dispatch(AddOrderItem(orderData,orderId)).then(() => {
+      dispatch(fetchOrders());
+    navigate("/orders-table")});
 
 
   };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {fetchSingleSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
+import {fetchSingleSellingorder,fetchSellingorders } from "../../../redux/apiCalls/sellingorderApiCall";
 import { AddSellingOrderItem} from "../../../redux/apiCalls/sellingorderitemApiCall"
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
@@ -29,9 +29,12 @@ const AddSellingOrderItemPage = () => {
       sellingorderItems,
     };
 
-    dispatch(AddSellingOrderItem(sellingorderData, sellingorderId));
+    dispatch(AddSellingOrderItem(sellingorderData, sellingorderId))
+    .then(() => {
+      dispatch(fetchSellingorders());
+      navigate("/sellings-table");
+    })
 
-    navigate("/sellings-table");
   };
 
   useEffect(() => {

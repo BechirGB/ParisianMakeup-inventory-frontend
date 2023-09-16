@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AdminSidebar from "../AdminSidebar";
 
-import { createSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
+import { createSellingorder,fetchSellingorders } from "../../../redux/apiCalls/sellingorderApiCall";
 import { RotatingLines } from "react-loader-spinner";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import {
@@ -44,12 +44,15 @@ const CreateSelling = () => {
       date,
     };
 
-    dispatch(createSellingorder(sellingorderData));
 
     setDeliveryId("");
     setOrderItems([{ product: "", quantity: "", price: "" }]);
     setDate("");
-    navigate("/sellings-table");
+    dispatch(createSellingorder(sellingorderData))
+    .then(() => {
+     dispatch(fetchSellingorders());
+     navigate("/sellings-table");
+   })
 
   };
 

@@ -31,7 +31,7 @@ const UpdateOrderPage = () => {
 
     dispatch(updateOrder(orderData, orderId))
      .then(() => {
-      dispatch(fetch());
+      dispatch(fetchOrders());
       navigate("/orders-table");
     })
     .catch((error) => {
@@ -39,7 +39,6 @@ const UpdateOrderPage = () => {
     });
 
 
-    navigate("/orders-table");
   };
 
   useEffect(() => {
