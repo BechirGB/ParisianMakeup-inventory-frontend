@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { createOrder } from "../../../redux/apiCalls/orderApiCall";
 import { RotatingLines } from "react-loader-spinner";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
-import { TextField, Button, Select, MenuItem, Grid, InputLabel } from "@mui/material";
+import { TextField, Button,  Container,
+  Select, MenuItem, Grid, InputLabel,FormControl } from "@mui/material";
+import Navbar from "../../../components/header/Navbar";
 
 const CreateOrder = () => {
   const dispatch = useDispatch();
@@ -19,7 +21,7 @@ const CreateOrder = () => {
   const [store, setStore] = useState("");
   const[order_Id,setOrderId]=useState("");
   const [orderItems, setOrderItems] = useState([
-    { product: "",price:0, quantity: 0, discount: 0 },
+    { product: "",price:"", quantity: "", discount: "" },
   ]);
   const [dateOrdered, setDateOrdered] = useState("");
   const navigate = useNavigate();
@@ -63,8 +65,11 @@ const CreateOrder = () => {
     dispatch(createOrder(orderData));
     setOrderId("");
     setStore("");
-    setOrderItems([{ product: "", price :0 ,quantity: 0, discount: 0 }]);
+    setOrderItems([{ product: "", price :"",quantity: "", discount: "" }]);
     setDateOrdered("");
+    navigate("/orders-table");
+
+
   };
 
   useEffect(() => {
@@ -77,31 +82,49 @@ const CreateOrder = () => {
     }
   }, [isOrderCreated, navigate]);
 
+
   return (
+
+
     <section className="table-container">
-       <AdminSidebar />
-      <form onSubmit={formSubmitHandler} className="create-order-form">
+
+       <AdminSidebar 
+        
+       />
+       <Container >
+
+      <form onSubmit={formSubmitHandler} >
+     <Grid item xs={3}>
       <TextField
+        fullWidth
+          variant="outlined"
           label="Order Id"
-          className="create-order-input"
           value={order_Id}
           onChange={(e) => setOrderId(e.target.value)}
         />
+        </Grid> 
+        <br></br>
+        <Grid>
         <TextField
+          fullWidth
+          variant="outlined"
           label="Order Store"
-          className="create-order-input"
           value={store}
           onChange={(e) => setStore(e.target.value)}
         />
+        </Grid>
+<br></br>
+<div className="order-items-container" style={{ maxHeight: "200px", overflowY: "auto" }}>
 
         {orderItems.map((item, index) => (
           <Grid container spacing={4} key={index}>
-            <Grid item xs={8}>
+            <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+
               <InputLabel>Product</InputLabel>
               <Select
                 value={item.product}
                 onChange={(e) => handleProductSelection(e.target.value, index)}
-                className="create-order-input"
               >
                 <MenuItem value="">
                   <em>Select A product</em>
@@ -112,13 +135,14 @@ const CreateOrder = () => {
                   </MenuItem>
                 ))}
               </Select>
+              </FormControl>
+
             </Grid>
             <br></br>
-            <Grid item xs={2}>
+            <Grid item xs={1.5}>
               <TextField
                 type="number"
                 label={`Quantity ${index + 1}`}
-                className="create-order-input"
                 value={item.quantity}
                 onChange={(e) => {
                   const updatedItems = [...orderItems];
@@ -127,12 +151,10 @@ const CreateOrder = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={1.5}>
               <TextField
                 type="decimal"
                 label={`Price ${index + 1}`}
-                defaultValue={0}
-                className="create-order-input"
                 value={item.price}
                 onChange={(e) => {
                   const updatedItems = [...orderItems];
@@ -141,12 +163,10 @@ const CreateOrder = () => {
                 }}
               />
           </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <TextField
-                type="number"
+                type="decimal"
                 label={`Discount ${index + 1}`}
-                defaultValue={0}
-                className="create-order-input"
                 value={item.discount}
                 onChange={(e) => {
                   const updatedItems = [...orderItems];
@@ -157,34 +177,38 @@ const CreateOrder = () => {
             </Grid>
           </Grid>
         ))}
-
+        <br></br>
+</div>
         <div className="order-actions">
           <Button
-            type="button"
-            className="create-order-btn"
+       variant="contained"
+            color="primary"
             onClick={handleAddOrderItem}
           >
             Add Order Item
-          </Button>
+          </Button> 
+          <br></br>
+          <br></br>
           <Button
-            type="button"
-            className="create-order-btn"
+          variant="contained"
+            color="secondary"
+      
             onClick={handleCancelOrderItem}
           >
             Cancel Last Item
           </Button>
         </div>
-
+<br></br>
+<Grid>
         <TextField
           type="datetime-local"
-          className="create-order-input"
           value={dateOrdered}
           onChange={(e) => setDateOrdered(e.target.value)}
         />
-
+        </Grid>
+<br></br>
         <Button
           type="submit"
-          className="create-order-btn"
           variant="contained"
           color="primary"
         >
@@ -201,6 +225,8 @@ const CreateOrder = () => {
           )}
         </Button>
       </form>
+      </Container>
+
     </section>
   );
 };

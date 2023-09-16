@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { useNavigate } from "react-router-dom";
+import IconButton from "@mui/material/IconButton"; 
+import EditIcon from "@mui/icons-material/Edit";
+
+import AddIcon from '@mui/icons-material/Add'; 
+import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../../redux/apiCalls/productApiCall';
@@ -14,49 +18,42 @@ const ProductsTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
   const handleAddNewProduct = () => {
-       navigate( '/products-table/add-product');
-    
+    navigate('/products-table/add-product');
   };
 
   const handleUpdate = (productId) => {
-
-       navigate( `/products-table/update-product/${productId}`);
-   
+    navigate(`/products-table/update-product/${productId}`);
   };
 
   const filteredProducts =
-  Array.isArray(products) && products.length > 0
-    ? products.filter(
-        (product) =>
-          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.brand.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
-
+    Array.isArray(products) && products.length > 0
+      ? products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : [];
 
   const columns = [
-   
     {
       name: 'Name',
-      selector: 'name',
+      selector: (row) => row.name,
       sortable: true,
     },
     {
       name: 'Brand',
-      selector: 'brand',
+      selector: (row) => row.brand,
       sortable: true,
     },
     {
       name: 'Sale Price',
-      selector: 'sale_Price',
+      selector: (row) => row.sale_Price,
       sortable: true,
-
     },
     {
       name: 'Link',
@@ -69,11 +66,16 @@ const ProductsTable = () => {
     {
       name: 'Actions',
       cell: (row) => (
-        <>
-          <Button color="success" variant="outlined" size="small" onClick={() => handleUpdate(row._id)}>
-            Update
-          </Button>
-        </>
+        <IconButton
+          variant="outlined"
+          color="success"
+          size="small"
+          onClick={() => handleUpdate(row._id)}
+        >
+                    <EditIcon />
+
+                   </IconButton>
+
       ),
     },
   ];
@@ -82,7 +84,7 @@ const ProductsTable = () => {
     <section className="table-container">
       <AdminSidebar />
       <div className="table-wrapper">
-        <br />
+
         <DataTable
           title="Liste Des Produits"
           columns={columns}
@@ -91,21 +93,23 @@ const ProductsTable = () => {
           subHeader
           subHeaderComponent={
             <div>
-              <TextField
-                fullWidth
-                placeholder="Search by  Name, or Brand"
-                value={searchTerm}
-                style={{ marginTop: '16px' }}
-
-                onChange={(e) => setSearchTerm(e.target.value)}
-                variant="outlined"
-              />
-              <Button
-                variant="outlined"
-                onClick={handleAddNewProduct}
-              >
-                Add New Product
-              </Button>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <TextField
+                  fullWidth
+                  placeholder="Search by Name, or Brand"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  variant="outlined"
+                  style={{ marginRight: '16px' }}
+                />
+                <Button
+                  variant="outlined"
+                  onClick={handleAddNewProduct}
+                  startIcon={<AddIcon />} 
+                >
+                  Add New Product
+                </Button>
+              </div>
             </div>
           }
         />
@@ -115,5 +119,6 @@ const ProductsTable = () => {
 };
 
 export default ProductsTable;
+
 
       

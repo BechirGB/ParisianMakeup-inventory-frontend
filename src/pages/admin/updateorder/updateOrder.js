@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { Container, Typography, TextField, Button } from "@mui/material";
 import AdminSidebar from "../AdminSidebar";
 import { updateOrder, fetchSingleOrder } from "../../../redux/apiCalls/orderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
@@ -20,7 +21,7 @@ const UpdateOrderPage = () => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (store.trim() === "") return toast.error("Order store is required");
-    
+
     if (dateOrdered.trim() === "") return toast.error("Date is required");
 
     const orderData = {
@@ -28,13 +29,12 @@ const UpdateOrderPage = () => {
       dateOrdered,
     };
 
-    dispatch(updateOrder(orderData,orderId));
+    dispatch(updateOrder(orderData, orderId));
 
     navigate("/orders-table");
   };
 
   useEffect(() => {
-    
     dispatch(fetchSingleOrder(orderId));
     dispatch(fetchProducts());
   }, [dispatch, orderId]);
@@ -46,29 +46,35 @@ const UpdateOrderPage = () => {
   }, [isOrderUpdated, navigate]);
 
   return (
-    <section className="table-container">
-            <AdminSidebar />
-
-      <h1 className="update-order-store">Update Order</h1>
-      <form onSubmit={formSubmitHandler} className="update-order-form">
-        <input
-          type="text"
-          placeholder="Order store"
-          className="create-order-input"
+    <Container maxWidth="md">
+      <Typography variant="h4" gutterBottom>
+        Update Order
+      </Typography>
+      <form onSubmit={formSubmitHandler}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Order store"
           value={store}
           onChange={(e) => setStore(e.target.value)}
         />
 
-
-        <input
+        <TextField
+          fullWidth
           type="date"
-          placeholder="Date Ordered"
-          className="create-order-input"
+          variant="outlined"
+          label="Date Ordered"
           value={dateOrdered}
           onChange={(e) => setDateOrdered(e.target.value)}
         />
-        {/* Form fields */}
-        <button type="submit" className="update-order-btn">
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className="update-order-btn"
+          disabled={loading}
+        >
           {loading ? (
             <RotatingLines
               strokeColor="white"
@@ -80,10 +86,11 @@ const UpdateOrderPage = () => {
           ) : (
             "Update"
           )}
-        </button>
+        </Button>
       </form>
-    </section>
+    </Container>
   );
 };
 
 export default UpdateOrderPage;
+

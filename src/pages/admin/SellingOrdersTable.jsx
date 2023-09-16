@@ -3,14 +3,17 @@ import AdminSidebar from "./AdminSidebar";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSellingorder, fetchSellingorders } from "../../redux/apiCalls/sellingorderApiCall";
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
+import TextField from "@mui/material/TextField";
+import EditIcon from "@mui/icons-material/Edit";
+
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import IconButton from "@mui/material/IconButton"; 
+import Typography from "@mui/material/Typography"; 
 import { deleteSellingOrderItem } from "../../redux/apiCalls/sellingorderitemApiCall";
 
 const formatDate = (dateString) => {
@@ -20,9 +23,7 @@ const formatDate = (dateString) => {
 
 const SellingordersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
-
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const { sellingorders } = useSelector((state) => state.sellingorder);
 
@@ -30,24 +31,16 @@ const SellingordersTable = () => {
     dispatch(fetchSellingorders());
   }, [dispatch]);
 
-  
-
   const handleAddNewOrder = () => {
-
-       navigate("add-sellingorder");
-      }
-  
+    navigate("add-sellingorder");
+  };
 
   const handleAddNewSellingOrder = (sellingorderId) => {
-
-       navigate(`add-newsellingitem/${sellingorderId}`);
-   
+    navigate(`add-newsellingitem/${sellingorderId}`);
   };
 
   const handleUpdate = (sellingorderId) => {
-    
-       navigate(`update-sellingorder/${sellingorderId}`);
-   
+    navigate(`update-sellingorder/${sellingorderId}`);
   };
 
   const handleDelete = (orderId) => {
@@ -104,20 +97,33 @@ const SellingordersTable = () => {
           <tbody>
             {data.sellingorderItems.map((orderItem) => (
               <tr key={orderItem._id}>
-                <td>{orderItem.product.name}</td>
-                <td>{orderItem.product.brand}</td>
-                <td>{orderItem.quantity}</td>
-                <td>{orderItem.price}</td>
                 <td>
-                  <Button
+                 
+                    {orderItem.product.name}
+                </td>
+                <td>
+                 
+                    {orderItem.product.brand}
+                </td>
+                <td>
+               
+                    {orderItem.quantity}
+              
+                </td>
+                <td>
+                 
+                    {orderItem.price}
+                
+                </td>
+                <td>
+                  <IconButton
                     color="error"
                     size="small"
                     variant="outlined"
-                    startIcon={<DeleteIcon />}
                     onClick={() => handleDeleteItem(orderItem._id)}
                   >
-                    Delete
-                  </Button>
+                    <DeleteIcon />
+                  </IconButton>
                 </td>
               </tr>
             ))}
@@ -126,24 +132,25 @@ const SellingordersTable = () => {
       </div>
     );
   };
-  
-  const filteredOrders = Array.isArray(sellingorders) && sellingorders.length > 0
-  ? sellingorders.filter((sellingorder) => {
-      const searchTermLower = searchTerm.toLowerCase();
-      const orderItems = sellingorder.orderItems;
 
-      return (
-        sellingorder.deliveryId ||
-        orderItems.some((item) =>
-          item.product &&
-          (
-            item.product.name.toLowerCase().includes(searchTermLower) ||
-            item.product.brand.toLowerCase().includes(searchTermLower)
-          )
-        )
-      );
-    })
-  : [];
+  const filteredOrders =
+    Array.isArray(sellingorders) && sellingorders.length > 0
+      ? sellingorders.filter((sellingorder) => {
+          const searchTermLower = searchTerm.toLowerCase();
+          const orderItems = sellingorder.orderItems;
+
+          return (
+            sellingorder.deliveryId ||
+            orderItems.some((item) =>
+              item.product &&
+              (
+                item.product.name.toLowerCase().includes(searchTermLower) ||
+                item.product.brand.toLowerCase().includes(searchTermLower)
+              )
+            )
+          );
+        })
+      : [];
 
   const columns = [
     {
@@ -170,34 +177,32 @@ const SellingordersTable = () => {
       name: "Actions",
       cell: (row) => (
         <div>
-          <Button
-            variant="outlined"
+          <IconButton
             color="error"
             size="small"
-            startIcon={<DeleteIcon />}
+            variant="outlined"
             onClick={() => handleDelete(row.id)}
           >
-            Delete
-          </Button>
-          <Button
-            variant="outlined"
+            <DeleteIcon />
+          </IconButton>
+          <IconButton
             color="success"
             size="small"
             onClick={() => handleUpdate(row.id)}
           >
-            Update
-          </Button>
-          <Button
-            variant="outlined"
+            <EditIcon />
+          </IconButton>
+          <IconButton
             size="small"
             onClick={() => handleAddNewSellingOrder(row.id)}
           >
-            Add
-          </Button>
+            <AddIcon />
+          </IconButton>
         </div>
       ),
     },
   ];
+
   return (
     <section className="table-container">
       <AdminSidebar />
@@ -214,13 +219,17 @@ const SellingordersTable = () => {
           subHeader
           subHeaderComponent={
             <div className="subheader">
-              <div className="subheader-content">
+              <div
+                className="subheader-content"
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <TextField
                   fullWidth
                   placeholder="Search by delivery id, or Product Name"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   variant="outlined"
+                  style={{ marginRight: "16px" }}
                 />
                 <Button variant="outlined" onClick={handleAddNewOrder}>
                   Add New Selling
@@ -228,7 +237,6 @@ const SellingordersTable = () => {
               </div>
             </div>
           }
-
         />
       </div>
     </section>
@@ -236,4 +244,5 @@ const SellingordersTable = () => {
 };
 
 export default SellingordersTable;
+
 

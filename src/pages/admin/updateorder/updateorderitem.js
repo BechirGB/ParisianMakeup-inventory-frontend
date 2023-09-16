@@ -70,9 +70,7 @@ const UpdateOrderItemPage = () => {
     <section className="table-container">
       <AdminSidebar />
     <Container>
-      <Typography variant="h4" align="center" gutterBottom>
-        Update Order Item
-      </Typography>
+      
       <form onSubmit={formSubmitHandler}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -148,7 +146,7 @@ const UpdateOrderItemPage = () => {
             />
           </Grid>
         </Grid>
-
+<br></br>
         <Button
           type="submit"
           variant="contained"

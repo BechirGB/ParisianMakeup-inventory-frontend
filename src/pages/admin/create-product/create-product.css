@@ -9,15 +9,30 @@
 }
 
 .create-product-title {
-    font-size: 30px;
+    font-size: 20px;
     color: var(--primary-color);
-    margin-bottom: 10px;
+    margin-top: 50px;
+
+}
+.product-container {
+    display: flex;
+    height:50;
+    overflow: hidden;
+    ;
 }
 
+h1{
+    padding: 20px;
+     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: gray;
+
+
+}
 .create-product-form {
     width: 700px;
     display: flex;
     flex-direction: column;
+    margin-left: 180px;
 }
 
 .create-product-input,
@@ -43,7 +58,7 @@
     width: 100%;
     text-align: center;
     cursor: pointer;
-    background-color: var(--primary-color);
+    background-color: palevioletred;
     color: var(--white-color);
     border: none;
     font-size: 21px;

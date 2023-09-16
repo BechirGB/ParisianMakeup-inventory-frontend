@@ -80,7 +80,7 @@ const AdminSidebar = () => {
           <Link to="/sellings-table" style={{ textDecoration: "none" }}>
           <li>
             <CreditCardIcon className="icon" />
-            <span> vente</span>
+            <span> Vente</span>
           </li>
           </Link>
           <br></br>

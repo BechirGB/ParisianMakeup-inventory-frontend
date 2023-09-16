@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import AdminSidebar from "./AdminSidebar";
 import "./admin-table.css";
-
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DisableIcon from "@mui/icons-material/Cancel";
+import EnableIcon from "@mui/icons-material/CheckCircle";
+import AddIcon from "@mui/icons-material/Add";
+import DataTable from "react-data-table-component";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import {
   getAllUsersProfile,
-  enableDisableUser, 
-} from "../../redux/apiCalls/profileApiCall"; 
+  enableDisableUser,
+} from "../../redux/apiCalls/profileApiCall";
 
 const UsersTable = () => {
   const dispatch = useDispatch();
@@ -22,16 +26,78 @@ const UsersTable = () => {
     dispatch(getAllUsersProfile());
   }, [isProfileDeleted]);
 
-
-
   const enableDisableUserHandler = (userId, isEnabled) => {
-    const actionMessage = isEnabled ? "disable" : "enable";
-    const confirmMessage = `Are you sure you want to ${actionMessage} this user's account?`;
+    const actionMessage = isEnabled ? "enable" : "disable";
 
-    if (window.confirm(confirmMessage)) {
-      dispatch(enableDisableUser(userId));
-    }
+    swal({
+      title: `Are you sure you want to ${actionMessage} this user's account?`,
+      icon: "warning",
+      buttons: ["Cancel", "Confirm"],
+      dangerMode: true,
+    }).then((willConfirm) => {
+      if (willConfirm) {
+        dispatch(enableDisableUser(userId));
+        swal(`User's account has been ${actionMessage}d.`, {
+          icon: "success",
+        });
+      }
+    });
   };
+
+  const columns = [
+    {
+      name: "Count",
+      selector: (row, index) => index + 1,
+      sortable: true,
+    },
+    {
+      name: "User",
+      selector:  (row) => row.username,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector:  (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: "Password",
+      selector:  (row) => row.password,
+      sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <div>
+          <IconButton
+            color="success"
+            size="small"
+            component={Link}
+            to={`update-user/${row._id}`}
+          >
+            <EditIcon />
+          </IconButton>
+          {row.isEnabled ? (
+            <IconButton
+              color="warning"
+              size="small"
+              onClick={() => enableDisableUserHandler(row._id, false)}
+            >
+              <DisableIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              color="info"
+              size="small"
+              onClick={() => enableDisableUserHandler(row._id, true)}
+            >
+              <EnableIcon />
+            </IconButton>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   const handleAddNewUser = () => {
     navigate("add-user");
@@ -41,78 +107,33 @@ const UsersTable = () => {
     <section className="table-container">
       <AdminSidebar />
       <div className="table-wrapper">
-        <h1 className="table-title">Users</h1>
-        <Button
+       
+
+        <DataTable
+          title="Liste Des Utilisateurs"
+          columns={columns}
+          data={profiles}
+          pagination
+          paginationPerPage={10} 
+          subHeader
+          subHeaderComponent= {
+           <Button
           color="error"
           variant="outlined"
-          onClick={() => handleAddNewUser()}
+          startIcon={<AddIcon />}
+          onClick={handleAddNewUser}
         >
           Add New User
         </Button>
-
-        <div className="table-button-group"></div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Count</th>
-              <th>User</th>
-              <th>Email</th>
-              <th>Password</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {profiles.map((item, index) => (
-              <tr key={item._id}>
-                <td>{index + 1}</td>
-                <td>
-                  <div className="table-image">
-                    <span className="table-username">{item.username}</span>
-                  </div>
-                </td>
-                <td>{item.email}</td>
-                <td>{item.password}</td>
-                <td>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    size="small"
-                  >
-                    <Link to={`update-user/${item._id}`}>Update</Link>
-                  </Button>
-
-                  {item.isEnabled ? (
-                    <Button
-                      variant="outlined"
-                      color="warning"
-                      size="small"
-                      onClick={() => enableDisableUserHandler(item._id, false)}
-                    >
-                      Disable
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outlined"
-                      color="info"
-                      size="small"
-                      onClick={() => enableDisableUserHandler(item._id, true)}
-                    >
-                      Enable
-                    </Button>
-                  )}
-
-               
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        }
+        />
       </div>
     </section>
   );
 };
 
 export default UsersTable;
+
 
 
 

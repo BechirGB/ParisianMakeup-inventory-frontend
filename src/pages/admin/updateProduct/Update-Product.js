@@ -45,7 +45,6 @@ const EditProduct = () => {
   return (
     <section className="table-container">
       <AdminSidebar />
-      <h1 className="create-product-title">Edit Product</h1>
       <form className="create-product-form">
         <TextField
           label="Product Name"

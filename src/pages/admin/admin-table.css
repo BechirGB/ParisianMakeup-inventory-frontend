@@ -1,13 +1,19 @@
 .table-container {
     display: flex;
-    height:50;
+    height:80;
     overflow: hidden;
     ;
 }
-
+.table-container-quantity{
+  display: flex;
+  height:700px;
+  width: 1000px;
+  overflow: hidden;
+  ;
+}
 .table-wrapper {
     flex: 10;
-    padding: 50px;
+    padding: 500px;
     background-color:white
 
 
@@ -17,9 +23,9 @@
 }
 
 .table-title {
-    font-size: 30px;
-    color: palevioletred;
-    margin-bottom: 15px;
+    font-size: 25px;
+    color: gray;
+    margin-bottom: 60px;
     border-bottom: 2px solid var(--secondary-color);
     padding-bottom: 3px;
     width: max-content;

@@ -8,27 +8,20 @@
     padding: 20px;
 }
 
-.create-order-title {
-    font-size: 30px;
-    color: pink;
-    margin-bottom: 10px;
-}
 
-.create-order-form {
+.create-sellingorder-form {
     width: 700px;
     display: flex;
+    margin-bottom: 100px;
     flex-direction: column;
 }
 
-.create-order-input,
-.create-order-textarea,
-.create-order-upload {
-    width: 100%;
-    border-radius: 10px;
+.create-sellingorder-title
+ {
+  
     border: 1px solid var(--gray-color);
-    font-size: 21px;
-    padding: 10px;
-    margin: 5px 0;
+    font-size: 18px;
+ 
 }
 
 .create-order-textarea {

@@ -3,9 +3,22 @@ import "./create-Sellingorder.css";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import AdminSidebar from "../AdminSidebar";
+
 import { createSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
 import { RotatingLines } from "react-loader-spinner";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
+import {
+  TextField,
+  Button,
+  Container,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 
 const CreateSelling = () => {
   const dispatch = useDispatch();
@@ -14,14 +27,14 @@ const CreateSelling = () => {
 
   const [deliveryId, setDeliveryId] = useState("");
   const [sellingorderItems, setOrderItems] = useState([
-    { product: "", quantity: 0, price: 0},
+    { product: "", quantity: "", price: "" },
   ]);
-  const [date ,setDate] = useState("");
+  const [date, setDate] = useState("");
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (deliveryId.trim() === "") return toast.error("Order deliveryId is required");
-    if (!sellingorderItems.every((item) => item.product && item.quantity !== 0))
+    if (!sellingorderItems.every((item) => item.product && item.quantity !== ""))
       return toast.error("All order items must have product and quantity");
     if (date.trim() === "") return toast.error("Date is required");
 
@@ -34,8 +47,10 @@ const CreateSelling = () => {
     dispatch(createSellingorder(sellingorderData));
 
     setDeliveryId("");
-    setOrderItems([{ product: "", quantity: 0,price:0 }]);
+    setOrderItems([{ product: "", quantity: "", price: "" }]);
     setDate("");
+    navigate("/sellings-table");
+
   };
 
   useEffect(() => {
@@ -49,111 +64,145 @@ const CreateSelling = () => {
     }
   }, [issellingorderCreated, navigate]);
 
+  const cancelLastOrderItem = () => {
+    if (sellingorderItems.length > 1) {
+      const updatedItems = [...sellingorderItems];
+      updatedItems.pop(); 
+      setOrderItems(updatedItems);
+    }
+  };
+
   return (
-    <section className="create-order">
-      <h1 className="create-order-deliveryId">Create New Order</h1>
-      <form onSubmit={formSubmitHandler} className="create-order-form">
-        <input
-          type="text"
-          placeholder="Order deliveryId"
-          className="create-order-input"
-          value={deliveryId}
-          onChange={(e) => setDeliveryId(e.target.value)}
-        />
+    <section className="table-container">
+      <AdminSidebar />
+      <Container  >
 
-        {sellingorderItems.map((item, index) => (
-          <div key={index}>
-            <select
-              value={item.product}
-              onChange={(e) => {
-                const updatedItems = [...sellingorderItems];
-                updatedItems[index].product = e.target.value;
-                setOrderItems(updatedItems);
-              }}
-              className="create-order-input"
+        <form onSubmit={formSubmitHandler} >
+          <Grid item xs={3}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Order deliveryId"
+              value={deliveryId}
+              onChange={(e) => setDeliveryId(e.target.value)}
+            />
+          </Grid>
+   <br></br>
+          <div className="order-items-container" style={{ maxHeight: "200px", overflowY: "auto" }}>
+            {sellingorderItems.map((item, index) => (
+              <Grid container spacing={4} key={index}>
+                <Grid item xs={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Select A product</InputLabel>
+                    <Select
+                      value={item.product}
+                      onChange={(e) => {
+                        const updatedItems = [...sellingorderItems];
+                        updatedItems[index].product = e.target.value;
+                        setOrderItems(updatedItems);
+                      }}
+                      label="Select A product"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {products.map((product) => (
+                        <MenuItem key={product._id} value={product._id}>
+                          {product.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label={`Quantity ${index + 1}`}
+                    value={item.quantity}
+                    onChange={(e) => {
+                      const updatedItems = [...sellingorderItems];
+                      updatedItems[index].quantity = e.target.value;
+                      setOrderItems(updatedItems);
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={3}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label={`Price ${index + 1}`}
+                    value={item.price}
+                    onChange={(e) => {
+                      const updatedItems = [...sellingorderItems];
+                      updatedItems[index].price = e.target.value;
+                      setOrderItems(updatedItems);
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            ))}
+            </div>
+            <br></br>
+            
+            <div className="order-actions">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                setOrderItems([
+                  ...sellingorderItems,
+                  { product: "", quantity: "", price: "" },
+                ])
+              }
             >
-              <option disabled value="">
-                Select A product
-              </option>
-              {products.map((product) => (
-                <option key={product._id} value={product._id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              placeholder={`Quantity ${index + 1}`}
-              className="create-order-input"
-              value={item.quantity}
-              onChange={(e) => {
-                const updatedItems = [...sellingorderItems];
-                updatedItems[index].quantity = e.target.value;
-                setOrderItems(updatedItems);
-              }}
+              Add Selling Item
+            </Button>
+            <br></br><br></br>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={cancelLastOrderItem}
+            >
+              Cancel 
+            </Button>
+            </div>
+<br></br>
+          <Grid>
+            <TextField
+              fullWidth
+              type="datetime-local"
+              variant="outlined"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
             />
-                  <input
-              type="number"
-              placeholder={`Price ${index + 1}`}
-              className="create-order-input"
-              value={item.price}
-              onChange={(e) => {
-                const updatedItems = [...sellingorderItems];
-                updatedItems[index].price = e.target.value;
-                setOrderItems(updatedItems);
-              }}
-            />
-          </div>
-        ))}
+          </Grid>
+<br></br>
 
-        <div className="order-actions">
-          <button
-            type="button"
-            className="create-order-btn"
-            onClick={() =>
-              setOrderItems([
-                ...sellingorderItems,
-                { product: "", quantity: 0, price: 0},
-              ])
-            }
-          >
-            Add Order Item
-          </button>
-          <button
-            type="button"
-            className="create-order-btn"
-            onClick={() =>
-              setOrderItems([{ product: "", quantity: 0, price:0 }])
-            }
-          >
-            Cancel
-          </button>
-        </div>
-
-        <input
-          type="datetime-local"
-          placeholder="Date Ordered"
-          className="create-order-input"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-
-        <button type="submit" className="create-order-btn">
-          {loading ? (
-            <RotatingLines
-              strokeColor="white"
-              strokeWidth={5}
-              animationDuration={0.75}
-              width={40}
-              visible
-            />
-          ) : (
-            "Create"
-          )}
-        </button>
-      </form>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={loading}
+            >
+              {loading ? (
+                <RotatingLines
+                  strokeColor="white"
+                  strokeWidth={5}
+                  animationDuration={0.75}
+                  width={40}
+                  visible
+                />
+              ) : (
+                "Create"
+              )}
+            </Button>
+        </form>
+      </Container>
     </section>
   );
 };
 
 export default CreateSelling;
+

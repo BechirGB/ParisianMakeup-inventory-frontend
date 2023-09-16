@@ -26,7 +26,6 @@ const CreateProduct = () => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
-    // Basic input validation
     if (!name.trim()) {
       setNameError("Product Name is required");
       return;
@@ -39,10 +38,10 @@ const CreateProduct = () => {
     }
 
     if (!sale_Price.trim()) {
-      setsale_PriceError("Product sale_Price is required");
+      toast.error("sale Price is required");
+
       return;
-    } else {
-      setsale_PriceError("");
+   
     }
 
     const productData = {
@@ -66,25 +65,27 @@ const CreateProduct = () => {
   }, [isProductCreated, navigate, error]);
 
   return (
-    <section className="table-container">
+    <section className="product-container">
           <AdminSidebar />
-
-      <h1 className="create-product-name">Create New Product</h1>
       <form onSubmit={formSubmitHandler} className="create-product-form">
-        {sale_PriceError && <p className="error-message">{sale_PriceError}</p>}
+        
+        <h1> Add Product</h1>
+
         <TextField
           label="Product Name"
           className="create-product-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        {nameError && <p className="error-message">{nameError}</p>}
+        <br></br>
         <TextField
           label="Product Brand"
           className="create-product-input"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
         />
+                <br></br>
+
         <TextField
           label="Product sale_Price"
           type="number"
@@ -92,12 +93,18 @@ const CreateProduct = () => {
           value={sale_Price}
           onChange={(e) => setsale_Price(e.target.value)}
         />
+                {sale_PriceError && <p className="error-message">{sale_PriceError}</p>}
+
+                <br></br>
+
         <TextField
           label="Product link"
           className="create-product-input"
           value={link}
           onChange={(e) => setLink(e.target.value)}
-        />
+        /> 
+                <br></br>
+
 
         <button type="submit" className="create-product-btn">
           {loading ? (

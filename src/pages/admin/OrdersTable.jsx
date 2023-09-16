@@ -3,13 +3,18 @@ import { useNavigate } from "react-router-dom";
 
 import AdminSidebar from "./AdminSidebar";
 import DataTable from "react-data-table-component";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+ import Button from '@mui/material/Button';
+
+import AddIcon from "@mui/icons-material/Add";
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders, deleteOrder } from "../../redux/apiCalls/orderApiCall";
 import { deleteOrderItem } from "../../redux/apiCalls/orderitemApiCall";
+import Typography from "@mui/material/Typography"; 
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -38,10 +43,11 @@ const OrdersTable = () => {
   const handleAddNewOrder = () => {
     navigate("/orders-table/create-order");
   };
-  const handleUpdateItem=(OrderItemId) =>{
-    navigate(`/orders-table/update-orderitem/${OrderItemId}`);
 
-  }
+  const handleUpdateItem = (OrderItemId) => {
+    navigate(`/orders-table/update-orderitem/${OrderItemId}`);
+  };
+
   const handleDeleteItem = (OrderItemId) => {
     swal({
       title: "Are you sure?",
@@ -89,7 +95,7 @@ const OrdersTable = () => {
               <th>Name:</th>
               <th>Brand:</th>
               <th>Quantity:</th>
-              <th> Quantity In Tunisia</th>
+              <th>Quantity In Tunisia</th>
               <th>Price</th>
               <th>Discount</th>
             </tr>
@@ -97,31 +103,38 @@ const OrdersTable = () => {
           <tbody>
             {data.orderItems.map((orderItem) => (
               <tr key={orderItem._id}>
-                <td>{orderItem.product.name}</td>
-                <td>{orderItem.product.brand}</td>
-                <td>{orderItem.quantity}</td>
-                <td>{orderItem.quantity_in_tunisia}</td>
+                <td>
+                    {orderItem.product.name}
+                </td>
+                <td>
+                    {orderItem.product.brand}
+                </td>
+                <td>
+                    {orderItem.quantity}
+                </td>
+                <td>
+                    {orderItem.quantity_in_tunisia}
+                </td>
                 <td>{orderItem.price}.00</td>
                 <td>{orderItem.discount}%</td>
                 <td>
-                  <Button
-                    variant="outlined"
-                    startIcon={<DeleteIcon />}
+                  <IconButton
+                    color="error"
+                    size="small"
                     onClick={() => handleDeleteItem(orderItem._id)}
                   >
-                    Delete
-                  </Button>
-
+                    <DeleteIcon />
+                  </IconButton>
                 </td>
                 <td>
-                <Button
-            variant="outlined"
-            color="success"
-            size="small"
-            onClick={() => handleUpdateItem(orderItem.id)}
-          >
-            Update
-          </Button>
+                  <IconButton
+                    variant="outlined"
+                    color="success"
+                    size="small"
+                    onClick={() => handleUpdateItem(orderItem.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
                 </td>
               </tr>
             ))}
@@ -132,19 +145,18 @@ const OrdersTable = () => {
   };
 
   const filteredOrders =
-    Array.isArray(orders) &&orders.length>0 ?
-    orders.filter((order) =>
-      order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.orderItems.some(
-        (item) =>
-          item.product &&
-          (
-            item.product.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      )
-    )   : [];
+    Array.isArray(orders) && orders.length > 0
+      ? orders.filter((order) =>
+          order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.orderItems.some(
+            (item) =>
+              item.product &&
+              item.product.name.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        )
+      : [];
 
   const columns = [
-
     {
       name: "Order Id",
       selector: (row) => row.order_Id,
@@ -157,7 +169,6 @@ const OrdersTable = () => {
       name: "Total Price",
       selector: (row) => row.totalPrice,
     },
-
     {
       name: "Date Ordered",
       selector: (row) => formatDate(row.dateOrdered),
@@ -166,26 +177,33 @@ const OrdersTable = () => {
       name: "Actions",
       cell: (row) => (
         <div>
-         <Button variant="outlined" size="small" onClick={() => handleAddItem(row.id)}>
-            Add
-          </Button>
-     
-          <Button
+          
+
+          <IconButton
             variant="outlined"
             color="success"
             size="small"
             onClick={() => handleUpdate(row.id)}
           >
-            Update
-          </Button>
-          <Button
+            <EditIcon />
+          </IconButton>
+
+          <IconButton
+            variant="outlined"
             color="error"
             size="small"
-            startIcon={<DeleteIcon />}
             onClick={() => handleDelete(row.id)}
           >
-          </Button>
-         
+            <DeleteIcon />
+          </IconButton>
+          <IconButton
+            variant="outlined"
+            color="success"
+            size="small"
+            onClick={() => handleAddItem(row.id)}
+          >
+            <AddIcon />
+          </IconButton>
         </div>
       ),
     },
@@ -197,7 +215,7 @@ const OrdersTable = () => {
       <div className="table-wrapper">
         <DataTable
           className="table-color"
-          title="Liste Des Ordres D'achat"
+          title="La liste des achats "
           columns={columns}
           data={filteredOrders}
           expandableRows
@@ -207,13 +225,17 @@ const OrdersTable = () => {
           subHeader
           subHeaderComponent={
             <div className="subheader">
-              <div className="subheader-content">
+              <div
+                className="subheader-content"
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <TextField
                   fullWidth
-                  placeholder="Search by Store,  or Product Name"
+                  placeholder="Search by Store, or Product Name"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   variant="outlined"
+                  style={{ marginRight: "16px" }}
                 />
                 <Button variant="outlined" onClick={handleAddNewOrder}>
                   Add New Order
@@ -227,9 +249,8 @@ const OrdersTable = () => {
   );
 };
 
-
-
 export default OrdersTable;
+
 
 
 
