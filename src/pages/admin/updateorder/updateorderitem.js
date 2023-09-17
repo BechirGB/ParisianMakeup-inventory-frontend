@@ -6,6 +6,8 @@ import {
   updateOrderItem,
   fetchSingleOrderItem,
 } from "../../../redux/apiCalls/orderitemApiCall";
+import { fetchOrders } from "../../../redux/apiCalls/orderApiCall";
+
 import AdminSidebar from "../AdminSidebar";
 
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
@@ -45,9 +47,11 @@ const UpdateOrderItemPage = () => {
       return toast.error("Product and quantity are required");
     }
 
-    dispatch(updateOrderItem(orderItem, orderItemId));
+    dispatch(updateOrderItem(orderItem, orderItemId)).then(()=>{
+      dispatch(fetchOrders());
     navigate("/orders-table");
-  };
+  });
+}
   useEffect(() => {
     if (OrderItems) {
       orderItem.quantity= OrderItems.quantity;

@@ -7,7 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
-import TextField from "@mui/material/TextField"; // Import MUI TextField
+import { TextField, Button,  Container,
+  Select, MenuItem, Grid, InputLabel,FormControl } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete"; // Import MUI Autocomplete
 
 const CreateProduct = () => {
@@ -73,7 +74,6 @@ const CreateProduct = () => {
 
         <TextField
           label="Product Name"
-          className="create-product-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -89,7 +89,6 @@ const CreateProduct = () => {
         <TextField
           label="Product sale_Price"
           type="number"
-          className="create-product-input"
           value={sale_Price}
           onChange={(e) => setsale_Price(e.target.value)}
         />
@@ -99,14 +98,18 @@ const CreateProduct = () => {
 
         <TextField
           label="Product link"
-          className="create-product-input"
           value={link}
           onChange={(e) => setLink(e.target.value)}
         /> 
                 <br></br>
 
+                <Grid item xs={2}>
+        <Button
+          type="submit"
+          variant="contained"
+          className="update-order-btn"
 
-        <button type="submit" className="create-product-btn">
+          color="primary">
           {loading ? (
             <RotatingLines
               strokeColor="white"
@@ -118,7 +121,8 @@ const CreateProduct = () => {
           ) : (
             "Create"
           )}
-        </button>
+          </Button>
+                  </Grid>
       </form>
     </section>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Typography, TextField, Button } from "@mui/material";
+import { Container,Grid ,Typography, TextField, Button } from "@mui/material";
 import AdminSidebar from "../AdminSidebar";
 import { updateOrder, fetchOrders,fetchSingleOrder } from "../../../redux/apiCalls/orderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
@@ -53,11 +53,14 @@ const UpdateOrderPage = () => {
   }, [isOrderUpdated, navigate]);
 
   return (
+    <section className="table-container">
+      <AdminSidebar />
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
-        Update Order
-      </Typography>
+    
       <form onSubmit={formSubmitHandler}>
+      <h1> -- Edit Order</h1>
+      <Grid>
+      
         <TextField
           fullWidth
           variant="outlined"
@@ -65,16 +68,18 @@ const UpdateOrderPage = () => {
           value={store}
           onChange={(e) => setStore(e.target.value)}
         />
-
+        </Grid>
+        <br></br>
+        <Grid>
         <TextField
           fullWidth
-          type="date"
+          type="datetime-local"
           variant="outlined"
-          label="Date Ordered"
           value={dateOrdered}
           onChange={(e) => setDateOrdered(e.target.value)}
         />
-
+        </Grid>
+        <br></br>
         <Button
           type="submit"
           variant="contained"
@@ -96,6 +101,7 @@ const UpdateOrderPage = () => {
         </Button>
       </form>
     </Container>
+    </section>
   );
 };
 

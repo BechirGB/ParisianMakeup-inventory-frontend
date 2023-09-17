@@ -120,7 +120,7 @@ const CreateSelling = () => {
                 <Grid item xs={3}>
                   <TextField
                     fullWidth
-                    type="number"
+                   type="number"
                     label={`Quantity ${index + 1}`}
                     value={item.quantity}
                     onChange={(e) => {

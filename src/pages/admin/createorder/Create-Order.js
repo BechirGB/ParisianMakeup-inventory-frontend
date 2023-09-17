@@ -212,10 +212,13 @@ const CreateOrder = () => {
         />
         </Grid>
 <br></br>
+<Grid item xs={2}>
         <Button
           type="submit"
           variant="contained"
           color="primary"
+          className="update-order-btn"
+
         >
           {loading ? (
             <RotatingLines
@@ -229,6 +232,8 @@ const CreateOrder = () => {
             "Create"
           )}
         </Button>
+                  </Grid>
+
       </form>
       </Container>
 
