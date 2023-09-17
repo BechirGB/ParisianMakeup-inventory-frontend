@@ -149,7 +149,7 @@ const OrdersTable = () => {
   const filteredOrders =
     Array.isArray(orders) && orders.length > 0
       ? orders.filter((order) =>
-          order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||     order.order_Id.toLowerCase().includes(searchTerm.toLowerCase()) ||
           order.orderItems.some(
             (item) =>
               item.product &&
@@ -233,7 +233,7 @@ const OrdersTable = () => {
               >
                 <TextField
                   fullWidth
-                  placeholder="Search by Store, or Product Name"
+                  placeholder="Search by ID ,Store, or Product Name"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   variant="outlined"
