@@ -209,7 +209,7 @@ const SellingordersTable = () => {
       <div className="table-wrapper">
         <DataTable
           className="table-color"
-          title="Liste Des Vents"
+          title="Liste Des Ventes"
           columns={columns}
           data={filteredOrders}
           expandableRows
