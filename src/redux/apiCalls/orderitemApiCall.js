@@ -6,7 +6,8 @@ export function fetchOrderitems() {
   return async (dispatch) => {
     try {
       const { data } = await request.get("/api/orderitems");
-      dispatch(OrderItemActions.setsetOrderItems(data));
+      dispatch(OrderItemActions.setOrderItems(data));
+      console.log(data)
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -17,6 +18,8 @@ export function fetchSingleOrderItem(orderItemId) {
     try {
       const { data } = await request.get(`/api/orderitems/${orderItemId}`);
       dispatch(OrderItemActions.setOrderItem(data));
+
+
     } catch (error) {
       toast.error(error.response.data.message);
     }

@@ -4,13 +4,20 @@ const orderItemSlice = createSlice({
    name: "OrderItem",
    initialState: {
     OrderItems: [],
+    OrderItem: {
+      product: "",
+      quantity: "",
+      price: "",
+      discount: "",
+      quantity_in_tunisia: "",
+    },
+
     OrderItemsCount:null,
     OrderItemsTotalPurchases:[],
     OrderItemsCate:[],
     loading: false,
     isOrderItemCreated: false,
     isOrderItemUpdated:false,
-    OrderItem:null
    },
    reducers: {
       setOrderItems(state, action) {
@@ -47,9 +54,10 @@ const orderItemSlice = createSlice({
       deleteOrderItem(state, action) {
          state.OrderItems = state.OrderItems.filter(c => c._id !== action.payload);
       },
-      setOrderItem(state,action) {
-         state.OrderItems = action.payload;
-       },
+      setOrderItem(state, action) {
+        state.OrderItem = action.payload;
+      },
+      
 
        
    }

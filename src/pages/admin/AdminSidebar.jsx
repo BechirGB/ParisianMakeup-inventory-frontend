@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 
 import { logoutUser } from "../../redux/apiCalls/authApiCall";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { DarkModeContext } from "../../context/darkModeContext";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();

@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/forms/Login";
+import { useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/not-found/NotFound";
 import { useSelector } from "react-redux";
@@ -21,9 +24,24 @@ import UpdateSellingOrderItemPage from "./pages/admin/updateSellingOrder/update-
 import AddOrderItemPage from "./pages/admin/addorderitem/AddOrderItem";
 import AddSellingOrderItemPage from "./pages/admin/addsellingorderitem/AddSellingOrdeItem";
 import UpdateProfileModal from "./pages/profile/UpdateProfileModal";
+import { authActions } from "./redux/slices/authSlice";
+import { useDispatch  } from "react-redux";
+
 import Unauthorized from "./pages/not authorized/Not authorized";
 function App() {
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+
+  const { user, tokenExpiration } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (tokenExpiration && new Date(tokenExpiration) < new Date()) {
+      dispatch(authActions.logout());
+      <Navigate to ="/" />
+       
+
+    }
+  }, [dispatch, tokenExpiration]);
 
   return (
     <BrowserRouter>
@@ -33,7 +51,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={user ? <Navigate to="/users-table" /> : <Login />}
+          element={user ? <Navigate to="/dashboard" /> : <Login />}
         />
         <Route
           path="/dashboard"
@@ -54,15 +72,15 @@ function App() {
             path="users-table">
         <Route
         index
-            element={ user?.isAdmin ?<UsersTable/> : <Navigate to="/unauthorized-page" />}
+            element={ user?.isAdmin ?<UsersTable/> : <Navigate to="/" />}
           />
               <Route
           path="add-user"
-          element={ user?.isAdmin ? <AddUserPage /> : <Navigate to="/unauthorized-page"/>}
+          element={ user?.isAdmin ? <AddUserPage /> : <Navigate to="/"/>}
         />
            <Route
           path="update-user/:userId"
-          element={ user?.isAdmin ? <UpdateProfileModal /> : <Navigate to="/unauthorized-page" />}
+          element={ user?.isAdmin ? <UpdateProfileModal /> : <Navigate to="/" />}
         />
       
       </Route>
@@ -70,11 +88,11 @@ function App() {
             path="products-table">
             <Route 
             index
-            element={user?.isAdmin ? <ProductsTable /> : <Navigate to="/unauthorized-page" />}
+            element={user?.isAdmin ? <ProductsTable /> : <Navigate to="/" />}
           />
           <Route
             path="add-product"
-            element={user?.isAdmin ? <CreateProduct /> : <Navigate to="/unauthorized-page" />}
+            element={user?.isAdmin ? <CreateProduct /> : <Navigate to="/" />}
             
           />
            <Route
