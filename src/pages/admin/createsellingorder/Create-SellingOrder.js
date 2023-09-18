@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./create-Sellingorder.css";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AdminSidebar from "../AdminSidebar";
 
-import { createSellingorder,fetchSellingorders } from "../../../redux/apiCalls/sellingorderApiCall";
+import { createSellingorder, fetchSellingorders } from "../../../redux/apiCalls/sellingorderApiCall";
 import { RotatingLines } from "react-loader-spinner";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import {
@@ -18,6 +17,7 @@ import {
   Select,
   MenuItem,
   Typography,
+  Paper,
 } from "@mui/material";
 
 const CreateSelling = () => {
@@ -44,16 +44,13 @@ const CreateSelling = () => {
       date,
     };
 
-
     setDeliveryId("");
     setOrderItems([{ product: "", quantity: "", price: "" }]);
     setDate("");
-    dispatch(createSellingorder(sellingorderData))
-    .then(() => {
-     dispatch(fetchSellingorders());
-     navigate("/sellings-table");
-   })
-
+    dispatch(createSellingorder(sellingorderData)).then(() => {
+      dispatch(fetchSellingorders());
+      navigate("/sellings-table");
+    });
   };
 
   useEffect(() => {
@@ -70,7 +67,7 @@ const CreateSelling = () => {
   const cancelLastOrderItem = () => {
     if (sellingorderItems.length > 1) {
       const updatedItems = [...sellingorderItems];
-      updatedItems.pop(); 
+      updatedItems.pop();
       setOrderItems(updatedItems);
     }
   };
@@ -78,134 +75,139 @@ const CreateSelling = () => {
   return (
     <section className="table-container">
       <AdminSidebar />
-      <Container  >
-
-        <form onSubmit={formSubmitHandler} >
-          <Grid item xs={3}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="Order deliveryId"
-              value={deliveryId}
-              onChange={(e) => setDeliveryId(e.target.value)}
-            />
-          </Grid>
-   <br></br>
-          <div className="order-items-container" style={{ maxHeight: "200px", overflowY: "auto" }}>
-            {sellingorderItems.map((item, index) => (
-              <Grid container spacing={4} key={index}>
-                <Grid item xs={6}>
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel>Select A product</InputLabel>
-                    <Select
-                      value={item.product}
-                      onChange={(e) => {
-                        const updatedItems = [...sellingorderItems];
-                        updatedItems[index].product = e.target.value;
-                        setOrderItems(updatedItems);
-                      }}
-                      label="Select A product"
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      {products.map((product) => (
-                        <MenuItem key={product._id} value={product._id}>
-                          {product.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField
-                    fullWidth
-                   type="number"
-                    label={`Quantity ${index + 1}`}
-                    value={item.quantity}
-                    onChange={(e) => {
-                      const updatedItems = [...sellingorderItems];
-                      updatedItems[index].quantity = e.target.value;
-                      setOrderItems(updatedItems);
-                    }}
-                  />
-                </Grid>
-
-                <Grid item xs={3}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label={`Price ${index + 1}`}
-                    value={item.price}
-                    onChange={(e) => {
-                      const updatedItems = [...sellingorderItems];
-                      updatedItems[index].price = e.target.value;
-                      setOrderItems(updatedItems);
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            ))}
-            </div>
-            <br></br>
-            
-            <div className="order-actions">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() =>
-                setOrderItems([
-                  ...sellingorderItems,
-                  { product: "", quantity: "", price: "" },
-                ])
-              }
-            >
-              Add Selling Item
-            </Button>
-            <br></br><br></br>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={cancelLastOrderItem}
-            >
-              Cancel 
-            </Button>
-            </div>
-<br></br>
-          <Grid>
-            <TextField
-              fullWidth
-              type="datetime-local"
-              variant="outlined"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </Grid>
-<br></br>
-
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={loading}
-            >
-              {loading ? (
-                <RotatingLines
-                  strokeColor="white"
-                  strokeWidth={5}
-                  animationDuration={0.75}
-                  width={40}
-                  visible
+      <Container maxWidth="lg">
+        <Paper elevation={3} style={{ padding: "20px" }}>
+          <form onSubmit={formSubmitHandler}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Order deliveryId"
+                  value={deliveryId}
+                  onChange={(e) => setDeliveryId(e.target.value)}
                 />
-              ) : (
-                "Create"
-              )}
-            </Button>
-        </form>
+              </Grid>
+              <Grid item xs={12}>
+                <div
+                  className="order-items-container"
+                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                >
+                  {sellingorderItems.map((item, index) => (
+                    <Grid container spacing={2} key={index}>
+                      <Grid item xs={6}>
+                        <FormControl fullWidth variant="outlined">
+                          <InputLabel>Select A product</InputLabel>
+                          <Select
+                            value={item.product}
+                            onChange={(e) => {
+                              const updatedItems = [...sellingorderItems];
+                              updatedItems[index].product = e.target.value;
+                              setOrderItems(updatedItems);
+                            }}
+                            label="Select A product"
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            {products.map((product) => (
+                              <MenuItem key={product._id} value={product._id}>
+                                {product.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <TextField
+                          fullWidth
+                          type="number"
+                          label={`Quantity ${index + 1}`}
+                          value={item.quantity}
+                          onChange={(e) => {
+                            const updatedItems = [...sellingorderItems];
+                            updatedItems[index].quantity = e.target.value;
+                            setOrderItems(updatedItems);
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <TextField
+                          fullWidth
+                          type="number"
+                          label={`Price ${index + 1}`}
+                          value={item.price}
+                          onChange={(e) => {
+                            const updatedItems = [...sellingorderItems];
+                            updatedItems[index].price = e.target.value;
+                            setOrderItems(updatedItems);
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                  ))}
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <div className="order-actions">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      setOrderItems([
+                        ...sellingorderItems,
+                        { product: "", quantity: "", price: "" },
+                      ])
+                    }
+                  >
+                    Add Selling Item
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={cancelLastOrderItem}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  type="datetime-local"
+                  variant="outlined"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <RotatingLines
+                      strokeColor="white"
+                      strokeWidth={5}
+                      animationDuration={0.75}
+                      width={40}
+                      visible
+                    />
+                  ) : (
+                    "Create"
+                  )}
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </Paper>
       </Container>
     </section>
   );
 };
 
 export default CreateSelling;
+
 

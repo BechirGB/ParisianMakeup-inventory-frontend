@@ -2,38 +2,48 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateSellingOrder, fetchSellingorders,fetchSingleSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
+import { Container, Grid, Typography, TextField, Button } from "@mui/material";
+import { updateSellingOrder, fetchSellingorders, fetchSingleSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
-import "./update-Sellingorder.css";
-
+import AdminSidebar from "../AdminSidebar";
 
 const UpdateSellingOrderPage = () => {
   const { sellingorderId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, isSellingOrderUpdated } = useSelector((state) => state.sellingorder);
+  const { loading, isSellingOrderUpdated, sellingorders } = useSelector((state) => state.sellingorder);
 
   const [deliveryId, setDeliveryId] = useState("");
   const [date, setDate] = useState("");
 
+  useEffect(() => {
+    if (sellingorders) {
+      setDeliveryId(sellingorders.deliveryId);
+      setDate(sellingorders.date);
+    }
+  }, [sellingorders]);
+
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (deliveryId.trim() === "") return toast.error("Order deliveryId is required");
-   
 
     const sellingorderData = {
       deliveryId,
-  date,
+      date,
     };
 
-    dispatch(updateSellingOrder(sellingorderData, sellingorderId)).then(() => {
-      dispatch(fetchSellingorders());
-
-    navigate("/sellings-table");
-  })
+    dispatch(updateSellingOrder(sellingorderData, sellingorderId))
+      .then(() => {
+        dispatch(fetchSellingorders());
+        navigate("/sellings-table");
+      })
+      .catch((error) => {
+        console.error("Error updating selling order:", error);
+      });
   };
+
   useEffect(() => {
     dispatch(fetchSingleSellingorder(sellingorderId));
     dispatch(fetchProducts());
@@ -46,40 +56,53 @@ const UpdateSellingOrderPage = () => {
   }, [isSellingOrderUpdated, navigate]);
 
   return (
-    <section className="update-order">
-      <h1 className="update-order-deliveryId">Update Selling Order</h1>
-      <form onSubmit={formSubmitHandler} className="update-order-form">
-        <input
-          type="text"
-          placeholder="Order deliveryId"
-          className="update-order-input"
-          value={deliveryId}
-          onChange={(e) => setDeliveryId(e.target.value)}
-        />
-
-
-        <input
-          type="datetime"
-          placeholder="Date"
-          className="update-order-input"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-
-        <button type="submit" className="update-order-btn">
-          {loading ? (
-            <RotatingLines
-              strokeColor="white"
-              strokeWidth={5}
-              animationDuration={0.75}
-              width={40}
-              visible
-            />
-          ) : (
-            "Update"
-          )}
-        </button>
-      </form>
+    <section className="table-container">
+      <AdminSidebar />
+      <Container maxWidth="md">
+        <form onSubmit={formSubmitHandler}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Order deliveryId"
+                value={deliveryId}
+                onChange={(e) => setDeliveryId(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                type="datetime-local"
+                variant="outlined"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={loading}
+              >
+                {loading ? (
+                  <RotatingLines
+                    strokeColor="white"
+                    strokeWidth={5}
+                    animationDuration={0.75}
+                    width={40}
+                    visible
+                  />
+                ) : (
+                  "Update"
+                )}
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Container>
     </section>
   );
 };

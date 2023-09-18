@@ -5,7 +5,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import{fetchSellingorders} from "../../../redux/apiCalls/sellingorderApiCall"
 import { updateSellingOrderitem, fetchSingleSellingOrderitem } from "../../../redux/apiCalls/sellingorderitemApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { RotatingLines } from "react-loader-spinner";
+import AdminSidebar from "../AdminSidebar";
+
+
+const UpdateSellingOrderItemPage = () => {
+  const { sellingorderItemid } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { loading, isOrderItemUpdated } = useSelector((state) => state.orderitem);
+  const { products } = useSelector((state) => state.product);
 
 const UpdateSellingOrderItemPage = () => {
   const { sellingorderItemid } = useParams();
@@ -16,9 +37,7 @@ const UpdateSellingOrderItemPage = () => {
   const { products } = useSelector((state) => state.product);
 
   const [quantity, setQuantity] = useState("");
-  const [sellingorderItems, setsellingorderItems] = useState([
-    { product: "" },
-  ]);
+  const [selectedProduct, setSelectedProduct] = useState("");
   const [price, setPrice] = useState("");
 
   const formSubmitHandler = (e) => {
@@ -29,16 +48,16 @@ const UpdateSellingOrderItemPage = () => {
     const orderData = {
       quantity,
       price,
+      product: selectedProduct,
     };
 
     dispatch(updateSellingOrderitem(orderData, sellingorderItemid)).then(() => {
       dispatch(fetchSellingorders());
       navigate("/sellings-table");
-    })
- 
-   };
+    });
+  };
+
   useEffect(() => {
-    console.log(sellingorderItemid);
     dispatch(fetchProducts());
     dispatch(fetchSingleSellingOrderitem(sellingorderItemid));
   }, [dispatch, sellingorderItemid]);
@@ -51,62 +70,67 @@ const UpdateSellingOrderItemPage = () => {
 
   return (
     <section className="update-order">
-      <h1 className="update-order-quantity">Update Order</h1>
-      <form onSubmit={formSubmitHandler} className="update-order-form">
-        <h1>New Order Item</h1>
-        <input
-          type="number"
-          placeholder="Order quantity"
-          className="create-order-input"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-        />
-   {sellingorderItems.map((item, index) => (
-          <div key={index}>
-            <select
-              value={item.product}
-             
-              className="create-order-input"
+      <AdminSidebar />
+      <Container maxWidth="md">
+        <Typography variant="h4" className="update-order-quantity">
+          Update Order
+        </Typography>
+        <form onSubmit={formSubmitHandler} className="update-order-form">
+          <Typography variant="h6">New Order Item</Typography>
+          <TextField
+            type="number"
+            label="Order quantity"
+            variant="outlined"
+            fullWidth
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+          <FormControl fullWidth variant="outlined" style={{ marginTop: "16px" }}>
+            <InputLabel>Select A product</InputLabel>
+            <Select
+              value={selectedProduct}
+              onChange={(e) => setSelectedProduct(e.target.value)}
+              label="Select A product"
             >
-              <option disabled value="">
+              <MenuItem value="" disabled>
                 Select A product
-              </option>
+              </MenuItem>
               {products.map((product) => (
-                <option key={product._id} value={product._id}>
+                <MenuItem key={product._id} value={product._id}>
                   {product.name}
-                </option>
+                </MenuItem>
               ))}
-            </select>
+            </Select>
+          </FormControl>
+          <TextField
+            type="number"
+            label="Price"
+            variant="outlined"
+            fullWidth
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            style={{ marginTop: "16px" }}
+          />
 
-            <input
-              type="number"
-              placeholder={`Price ${index + 1}`}
-              className="create-order-input"
-              value={item.price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-
-            
-          </div>
-        ))}
-
-        {/* Form fields */}
-        <button type="submit" className="update-order-btn">
-          {loading ? (
-            <RotatingLines
-              strokeColor="white"
-              strokeWidth={5}
-              animationDuration={0.75}
-              width={40}
-              visible
-            />
-          ) : (
-            "Update"
-          )}
-        </button>
-      </form>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={loading}
+            style={{ marginTop: "16px" }}
+            startIcon={
+              loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : null
+            }
+          >
+            {loading ? "Updating..." : "Update"}
+          </Button>
+        </form>
+      </Container>
     </section>
   );
-};
+};}
 
 export default UpdateSellingOrderItemPage;
