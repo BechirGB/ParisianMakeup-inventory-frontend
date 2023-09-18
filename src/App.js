@@ -37,7 +37,6 @@ function App() {
   useEffect(() => {
     if (tokenExpiration && new Date(tokenExpiration) < new Date()) {
       dispatch(authActions.logout());
-      <Navigate to ="/" />
        
 
     }
@@ -51,7 +50,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={user ? <Navigate to="/dashboard" /> : <Login />}
+          element={user ? <Navigate to="/users-table" /> : <Login />}
         />
         <Route
           path="/dashboard"
