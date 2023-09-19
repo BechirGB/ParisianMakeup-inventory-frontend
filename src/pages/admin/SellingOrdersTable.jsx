@@ -134,23 +134,24 @@ const SellingordersTable = () => {
   };
 
   const filteredOrders =
-    Array.isArray(sellingorders) && sellingorders.length > 0
-      ? sellingorders.filter((sellingorder) => {
-          const searchTermLower = searchTerm.toLowerCase();
-          const orderItems = sellingorder.orderItems;
+  Array.isArray(sellingorders) && sellingorders.length > 0
+    ? sellingorders.filter((sellingorder) => {
+        const searchTermLower = searchTerm.toLowerCase();
+        const orderItems = sellingorder.orderItems || []; // Ensure orderItems is not undefined
 
-          return (
-            sellingorder.deliveryId ||
-            orderItems.some((item) =>
-              item.product &&
-              (
-                item.product.name.toLowerCase().includes(searchTermLower) ||
-                item.product.brand.toLowerCase().includes(searchTermLower)
-              )
+        return (
+          sellingorder.deliveryId ||
+          orderItems.some((item) =>
+            item.product &&
+            (
+              item.product.name.toLowerCase().includes(searchTermLower) ||
+              item.product.brand.toLowerCase().includes(searchTermLower)
             )
-          );
-        })
-      : [];
+          )
+        );
+      })
+    : [];
+
 
   const columns = [
     {
