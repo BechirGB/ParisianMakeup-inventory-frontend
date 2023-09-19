@@ -36,12 +36,9 @@ const UpdateSellingOrderPage = () => {
 
     dispatch(updateSellingOrder(sellingorderData, sellingorderId))
       .then(() => {
-        dispatch(fetchSellingorders());
         navigate("/sellings-table");
       })
-      .catch((error) => {
-        console.error("Error updating selling order:", error);
-      });
+   
   };
 
   useEffect(() => {
@@ -73,7 +70,7 @@ const UpdateSellingOrderPage = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                type="datetime-local"
+                type="date"
                 variant="outlined"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}

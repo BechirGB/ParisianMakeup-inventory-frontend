@@ -206,7 +206,7 @@ const CreateOrder = () => {
 <br></br>
 <Grid>
         <TextField
-          type="datetime-local"
+          type="date"
           value={dateOrdered}
           onChange={(e) => setDateOrdered(e.target.value)}
         />
