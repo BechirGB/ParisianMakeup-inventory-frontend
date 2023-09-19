@@ -163,11 +163,7 @@ const SellingordersTable = () => {
       selector: (row) => row.totalPrice,
       sortable: true,
     },
-    {
-      name: "User",
-      selector: (row) => row.user.username,
-      sortable: true,
-    },
+
     {
       name: "Date",
       selector: (row) => formatDate(row.date),

@@ -175,10 +175,7 @@ const OrdersTable = () => {
       name: "Date Ordered",
       selector: (row) => formatDate(row.dateOrdered),
     },
-    {
-      name: "User",
-      selector: (row) =>(row.user.username),
-    },
+ 
     {
       name: "Actions",
       cell: (row) => (

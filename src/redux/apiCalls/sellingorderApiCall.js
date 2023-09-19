@@ -36,6 +36,7 @@ export function createSellingorder(newSellingorder) {
         }
       });
       dispatch(SellingorderActions.addSellingorder(data));
+      console.log(data)
       toast.success("Sellingorder created successfully");
     } catch (error) {
       toast.error(error.response.data.message);
