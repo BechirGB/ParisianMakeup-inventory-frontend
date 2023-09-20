@@ -43,7 +43,7 @@ const UpdateOrderItemPage = () => {
     if (!orderItem.product || orderItem.quantity === 0) {
       return toast.error("Product and quantity are required");
     }
-    if (orderItem.quantity_in_tunisia >= orderItem.quantity) {
+    if (orderItem.quantity_in_tunisia > orderItem.quantity) {
       return toast.error("Quantity in Tunisia must be less than Quantity");
     }
     dispatch(updateOrderItem(orderItem, orderItemId)).then(() => {
