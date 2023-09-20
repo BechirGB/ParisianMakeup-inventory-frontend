@@ -79,40 +79,41 @@ const ProductsTable = () => {
     <section className="table-container">
       <AdminSidebar />
       <div className="table-wrapper">
-        <DataTable
-          title="Liste Des Produits"
-          columns={columns}
-          data={filteredProducts}
-          pagination
-          subHeader
-          subHeaderComponent={
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <TextField
-                  fullWidth
-                  placeholder="Search by Name, or Brand"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  variant="outlined"
-                  style={{ marginRight: '16px' }}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={handleAddNewProduct}
-                  startIcon={<AddIcon />} 
-                >
-                  Add New Product
-                </Button>
+        <div className="table-scroll">
+          <DataTable
+            title="Liste Des Produits"
+            columns={columns}
+            data={filteredProducts}
+            pagination
+            subHeader
+            subHeaderComponent={
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <TextField
+                    fullWidth
+                    placeholder="Search by Name, or Brand"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    variant="outlined"
+                    style={{ marginRight: '16px' }}
+                  />
+                  <Button
+                    variant="outlined"
+                    onClick={handleAddNewProduct}
+                    startIcon={<AddIcon />}
+                  >
+                    Add New Product
+                  </Button>
+                </div>
               </div>
-            </div>
-          }
-        />
+            }
+          />
+        </div>
       </div>
     </section>
   );
 };
 
 export default ProductsTable;
-
 
       

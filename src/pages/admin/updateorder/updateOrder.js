@@ -76,7 +76,7 @@ const UpdateOrderPage = () => {
           <Grid>
             <TextField
               fullWidth
-              type="datetime-local"
+              type="date"
               variant="outlined"
               value={dateOrdered}
               onChange={(e) => setDateOrdered(e.target.value)}

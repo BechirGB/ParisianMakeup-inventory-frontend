@@ -7,10 +7,15 @@
 .table-container-quantity{
   display: flex;
   height:700px;
-  width: 1000px;
+  width: 1200px;
   overflow: hidden;
   ;
 }
+.table-scroll {
+  max-height: 750px; 
+  overflow-y: auto;
+}
+
 .table-wrapper {
     flex: 10;
     padding: 500px;

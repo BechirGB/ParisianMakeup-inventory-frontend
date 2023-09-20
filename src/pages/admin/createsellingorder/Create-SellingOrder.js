@@ -175,7 +175,7 @@ const CreateSelling = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  type="datetime-local"
+                  type="date"
                   variant="outlined"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}

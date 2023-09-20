@@ -18,8 +18,10 @@ import Typography from "@mui/material/Typography";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
 };
+
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -147,16 +149,18 @@ const OrdersTable = () => {
   };
 
   const filteredOrders =
-    Array.isArray(orders) && orders.length > 0
-      ? orders.filter((order) =>
-          order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||     order.order_Id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          order.orderItems.some(
-            (item) =>
-              item.product &&
-              item.product.name.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+  Array.isArray(orders) && orders.length > 0
+    ? orders.filter((order) =>
+        order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.order_Id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.orderItems.some(
+          (item) =>
+            item.product &&
+            item.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.product.brand.toLowerCase().includes(searchTerm.toLowerCase())  
         )
-      : [];
+      )
+    : [];
 
   const columns = [
     {
@@ -234,7 +238,7 @@ const OrdersTable = () => {
               >
                 <TextField
                   fullWidth
-                  placeholder="Search by ID ,Store, or Product Name"
+                  placeholder="Search by ID ,Store, Name,Brand"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   variant="outlined"

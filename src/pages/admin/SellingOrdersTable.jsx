@@ -18,8 +18,10 @@ import { deleteSellingOrderItem } from "../../redux/apiCalls/sellingorderitemApi
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
 };
+
 
 const SellingordersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -135,21 +137,15 @@ const SellingordersTable = () => {
 
   const filteredOrders =
   Array.isArray(sellingorders) && sellingorders.length > 0
-    ? sellingorders.filter((sellingorder) => {
-        const searchTermLower = searchTerm.toLowerCase();
-        const orderItems = sellingorder.orderItems || []; // Ensure orderItems is not undefined
-
-        return (
-          sellingorder.deliveryId ||
-          orderItems.some((item) =>
+    ? sellingorders.filter((sellingorder) => 
+        sellingorder.deliveryId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        sellingorder.sellingorderItems.some(
+          (item) =>
             item.product &&
-            (
-              item.product.name.toLowerCase().includes(searchTermLower) ||
-              item.product.brand.toLowerCase().includes(searchTermLower)
-            )
-          )
-        );
-      })
+            item.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.product.brand.toLowerCase().includes(searchTerm.toLowerCase())  
+        )
+      )
     : [];
 
 

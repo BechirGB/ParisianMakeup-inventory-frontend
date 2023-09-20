@@ -14,33 +14,37 @@ const QuantityInStocksTable = () => {
     dispatch(getQuantityInStock());
   }, [dispatch]);
 
-  const filteredQuantities = Array.isArray(quantities) && quantities.length > 0
-    ? quantities.filter(
-      (quantity) =>
-        quantity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        quantity.brand.toLowerCase().includes(searchTerm.toLowerCase())
-    ) : [];
+  const filteredQuantities =
+    Array.isArray(quantities) && quantities.length > 0
+      ? quantities.filter(
+          (quantity) =>
+            quantity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            quantity.brand.toLowerCase().includes(searchTerm.toLowerCase())
+          
+        )
+          
+      : [];
 
   const columns = [
     {
       name: "Name",
-      selector:  (row) => row.name,
+      selector: (row) => row.name,
     },
     {
       name: "Brand",
-      selector:  (row) => row.brand,
+      selector: (row) => row.brand,
     },
     {
       name: "Sale Price",
-      selector:  (row) => row.sale_Price,
+      selector: (row) => row.sale_Price,
     },
     {
       name: "Stock",
-      selector:  (row) => row.quantity,
+      selector: (row) => row.quantity,
     },
     {
       name: "Stock In Tunisia",
-      selector:  (row) => row.quantity_in_tunisia,
+      selector: (row) => row.quantity_in_tunisia,
     },
   ];
 
@@ -76,6 +80,7 @@ const QuantityInStocksTable = () => {
 };
 
 export default QuantityInStocksTable;
+
 
 
 
