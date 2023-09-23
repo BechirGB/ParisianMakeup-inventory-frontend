@@ -1,7 +1,6 @@
 import { SellingorderActions } from "../slices/sellingorderSlice";
 import request from "../../utils/request";
 import { toast } from "react-toastify";
-import { authActions } from "../slices/authSlice";
 
 
 // Fetch All Sellingorders
@@ -9,7 +8,8 @@ export function fetchSellingorders() {
   return async (dispatch) => {
     try {
       const { data } = await request.get("/api/sellingorders");
-      dispatch(SellingorderActions.setSellingorders(data));
+      dispatch(SellingorderActions.setSellingorders(data.orders));
+      dispatch(SellingorderActions.setTotalSales(data.totalSales))
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -96,3 +96,14 @@ export function updateSellingOrder(newsellingorder,sellingorderId) {
   };
 }
 
+export function fetchSellingOrdersBetweenDates(startDate, endDate) {
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await request.get(`/api/sellingorders/total?startDate=${startDate}&endDate=${endDate}`);
+      dispatch(SellingorderActions.setSellingorders(data.sellingorders));
+      dispatch(SellingorderActions.setTotalSales(data.totalSales));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+}

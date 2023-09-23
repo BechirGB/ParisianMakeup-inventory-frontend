@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AdminSidebar from "../AdminSidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchSingleProduct,getAllProducts, updateProduct } from "../../../redux/apiCalls/productApiCall";
-import { TextField, Button } from "@mui/material"; // Import MUI TextField and Button
+import { TextField, Button ,Container,Paper} from "@mui/material"; // Import MUI TextField and Button
 
 const EditProduct = () => {
   const { productId } = useParams();
@@ -52,17 +52,17 @@ const EditProduct = () => {
   return (
     <section className="table-container">
       <AdminSidebar />
+      <Container maxWidth="lg">
+        <Paper elevation={1} style={{ padding: "20px" }}>
       <form className="create-product-form">
         <TextField
           label="Product Name"
-          className="create-product-input"
           value={updatedName}
           onChange={(e) => setUpdatedName(e.target.value)}
           sx={{ marginBottom: 5 }} 
         />
         <TextField
           label="Product Brand"
-          className="create-product-input"
           value={updatedBrand}
           onChange={(e) => setUpdatedBrand(e.target.value)}
           sx={{ marginBottom: 5 }} 
@@ -70,14 +70,12 @@ const EditProduct = () => {
                   <TextField
 
           label="Product Selling Price"
-          className="create-product-input"
           value={updatedsalePrice}
           onChange={(e) => setUpdatedsalePrice(e.target.value)}
           sx={{ marginBottom: 5 }} 
         />
         <TextField
           label="Product Link"
-          className="create-product-input"
           value={updatedlink}
           onChange={(e) => setUpdatedlink(e.target.value)}
           sx={{ marginBottom: 5 }} 
@@ -91,6 +89,8 @@ const EditProduct = () => {
           Update
         </Button>
       </form>
+      </Paper>
+</Container>
     </section>
   );
 };

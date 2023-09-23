@@ -5,12 +5,12 @@ const SellingorderSlice = createSlice({
    initialState: {
     sellingorders: [],
     sellingordersCount:null,
-    sellingordersTotalPurchases:null,
     sellingordersCate:[],
     loading: false,
     issellingorderCreated: false,
     issellingorderUpdated:false,
-    sellingorder:null
+    sellingorder:null,
+    totalSales:null,
    },
    reducers: {
       setSellingorders(state, action) {
@@ -19,9 +19,7 @@ const SellingorderSlice = createSlice({
       setSellingordersCount(state, action) {
          state.sellingordersCount = action.payload;
        },
-       setSellingordersTotalPurchases(state, action) {
-         state.sellingordersTotalPurchases = action.payload;
-       },
+     
 
       addSellingorder(state, action) {
          state.sellingorders.push(action.payload);
@@ -50,6 +48,9 @@ const SellingorderSlice = createSlice({
       setSellingorder(state,action) {
          state.sellingorders = action.payload;
        },
+       setTotalSales(state, action) {
+        state.totalSales = action.payload;
+      },
 
        
    }

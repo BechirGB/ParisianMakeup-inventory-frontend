@@ -6,12 +6,22 @@ import AdminSidebar from "../AdminSidebar";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createOrder,fetchOrders } from "../../../redux/apiCalls/orderApiCall";
+import { createOrder, fetchOrders } from "../../../redux/apiCalls/orderApiCall";
 import { RotatingLines } from "react-loader-spinner";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
-import { TextField, Button,  Container,
-  Select, MenuItem, Grid, InputLabel,FormControl } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Container,
+  Paper,
+  Select,
+  MenuItem,
+  Grid,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import Navbar from "../../../components/header/Navbar";
+import Autocomplete from "@mui/material/Autocomplete"; // Import Autocomplete
 
 const CreateOrder = () => {
   const dispatch = useDispatch();
@@ -19,9 +29,9 @@ const CreateOrder = () => {
   const { products } = useSelector((state) => state.product);
 
   const [store, setStore] = useState("");
-  const[order_Id,setOrderId]=useState("");
+  const [order_Id, setOrderId] = useState("");
   const [orderItems, setOrderItems] = useState([
-    { product: "",price:"", quantity: "", discount: "" },
+    { product: "", price: "", quantity: "", discount: "" },
   ]);
   const [dateOrdered, setDateOrdered] = useState("");
   const navigate = useNavigate();
@@ -35,7 +45,7 @@ const CreateOrder = () => {
   const handleAddOrderItem = () => {
     setOrderItems([
       ...orderItems,
-      { product: "",price:0, quantity: 0, discount: 0 },
+      { product: "", price: 0, quantity: 0, discount: 0 },
     ]);
   };
 
@@ -52,7 +62,9 @@ const CreateOrder = () => {
     if (order_Id.trim() === "") return toast.error("order_id is required");
     if (store.trim() === "") return toast.error("Order store is required");
     if (!orderItems.every((item) => item.product && item.quantity !== 0))
-      return toast.error("All order items must have a product and quantity");
+      return toast.error(
+        "All order items must have a product and quantity"
+      );
     if (dateOrdered.trim() === "") return toast.error("Date is required");
 
     const orderData = {
@@ -64,17 +76,12 @@ const CreateOrder = () => {
 
     setOrderId("");
     setStore("");
-    setOrderItems([{ product: "", price :"",quantity: "", discount: "" }]);
+    setOrderItems([{ product: "", price: "", quantity: "", discount: "" }]);
     setDateOrdered("");
-    dispatch(createOrder(orderData)).then(()=>{
+    dispatch(createOrder(orderData)).then(() => {
       dispatch(fetchOrders());
       navigate("/orders-table");
-
-
-    })
-
-
-
+    });
   };
 
   useEffect(() => {
@@ -87,160 +94,155 @@ const CreateOrder = () => {
     }
   }, [isOrderCreated, navigate]);
 
-
   return (
-
-
     <section className="table-container">
+      <AdminSidebar />
+      <Container>
+      <Paper elevation={3} style={{ padding: "20px" }}>
 
-       <AdminSidebar 
-        
-       />
-       <Container >
-
-      <form onSubmit={formSubmitHandler} >
-     <Grid item xs={3}>
-      <TextField
-        fullWidth
-          variant="outlined"
-          label="Order Id"
-          value={order_Id}
-          onChange={(e) => setOrderId(e.target.value)}
-        />
-        </Grid> 
-        <br></br>
-        <Grid>
-        <TextField
-          fullWidth
-          variant="outlined"
-          label="Order Store"
-          value={store}
-          onChange={(e) => setStore(e.target.value)}
-        />
-        </Grid>
-<br></br>
-<div className="order-items-container" style={{ maxHeight: "200px", overflowY: "auto" }}>
-
-        {orderItems.map((item, index) => (
-          <Grid container spacing={4} key={index}>
-            <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-
-              <InputLabel>Product</InputLabel>
-              <Select
-                value={item.product}
-                onChange={(e) => handleProductSelection(e.target.value, index)}
-              >
-                <MenuItem value="">
-                  <em>Select A product</em>
-                </MenuItem>
-                {products.map((product) => (
-                  <MenuItem key={product._id} value={product._id}>
-                    {product.name},   {product.brand}
-                  </MenuItem>
-                ))}
-              </Select>
-              </FormControl>
-
-            </Grid>
-            <br></br>
-            <Grid item xs={1.5}>
-              <TextField
-                type="number"
-                label={`Quantity ${index + 1}`}
-                value={item.quantity}
-                onChange={(e) => {
-                  const updatedItems = [...orderItems];
-                  updatedItems[index].quantity = e.target.value;
-                  setOrderItems(updatedItems);
-                }}
-              />
-            </Grid>
-            <Grid item xs={1.5}>
-              <TextField
-                type="decimal"
-                label={`Price ${index + 1}`}
-                value={item.price}
-                onChange={(e) => {
-                  const updatedItems = [...orderItems];
-                  updatedItems[index].price = e.target.value;
-                  setOrderItems(updatedItems);
-                }}
-              />
-          </Grid>
-            <Grid item xs={2}>
-              <TextField
-                type="decimal"
-                label={`Discount ${index + 1}`}
-                value={item.discount}
-                onChange={(e) => {
-                  const updatedItems = [...orderItems];
-                  updatedItems[index].discount = e.target.value;
-                  setOrderItems(updatedItems);
-                }}
-              />
-            </Grid>
-          </Grid>
-        ))}
-        <br></br>
-</div>
-        <div className="order-actions">
-          <Button
-       variant="contained"
-            color="primary"
-            onClick={handleAddOrderItem}
-          >
-            Add Order Item
-          </Button> 
-          <br></br>
-          <br></br>
-          <Button
-          variant="contained"
-            color="secondary"
-      
-            onClick={handleCancelOrderItem}
-          >
-            Cancel Last Item
-          </Button>
-        </div>
-<br></br>
-<Grid>
-        <TextField
-          type="date"
-          value={dateOrdered}
-          onChange={(e) => setDateOrdered(e.target.value)}
-        />
-        </Grid>
-<br></br>
-<Grid item xs={2}>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className="update-order-btn"
-
-        >
-          {loading ? (
-            <RotatingLines
-              strokeColor="white"
-              strokeWidth={5}
-              animationDuration={0.75}
-              width={40}
-              visible
+        <form onSubmit={formSubmitHandler}>
+          <Grid item xs={3}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Order Id"
+              value={order_Id}
+              onChange={(e) => setOrderId(e.target.value)}
             />
-          ) : (
-            "Create"
-          )}
-        </Button>
-                  </Grid>
+          </Grid>
+          <br></br>
+          <Grid>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Order Store"
+              value={store}
+              onChange={(e) => setStore(e.target.value)}
+            />
+          </Grid>
+          <br></br>
+          <div
+            className="order-items-container"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            {orderItems.map((item, index) => (
+              <Grid container spacing={4} key={index}>
+                <Grid item xs={6}>
+                  <FormControl fullWidth variant="outlined"
+                  >
+                  
+                    <Autocomplete
+                      options={products}
+                      getOptionLabel={(product) =>
+                        `${product.name}, ${product.brand}`
+                      }
+                      value={
+                        products.find((p) => p._id === item.product) || null
+                      }
+                      onChange={(e, newValue) =>
+                        handleProductSelection(
+                          newValue ? newValue._id : "",
+                          index
+                        )
+                      }
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </FormControl>
+                </Grid>
+                <br></br>
+                <Grid item xs={1.5}>
+                  <TextField
+                    label={`Quantity ${index + 1}`}
+                    value={item.quantity}
+                    onChange={(e) => {
+                      const updatedItems = [...orderItems];
+                      updatedItems[index].quantity = e.target.value;
+                      setOrderItems(updatedItems);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={1.5}>
+                  <TextField
+                    label={`Price ${index + 1}`}
+                    value={item.price}
+                    onChange={(e) => {
+                      const updatedItems = [...orderItems];
+                      updatedItems[index].price = e.target.value;
+                      setOrderItems(updatedItems);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <TextField
+                    label={`Discount ${index + 1}`}
+                    value={item.discount}
+                    onChange={(e) => {
+                      const updatedItems = [...orderItems];
+                      updatedItems[index].discount = e.target.value;
+                      setOrderItems(updatedItems);
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            ))}
+            <br></br>
+          </div>
+          <div className="order-actions">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddOrderItem}
+            >
+              Add Order Item
+            </Button>
+            <br></br>
+            <br></br>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleCancelOrderItem}
+            >
+              Cancel Last Item
+            </Button>
+          </div>
+          <br></br>
+          <Grid>
+            <TextField
+              type="date"
+              value={dateOrdered}
+              onChange={(e) => setDateOrdered(e.target.value)}
+            />
+          </Grid>
+          <br></br>
+          <Grid item xs={2}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="update-order-btn"
+            >
+              {loading ? (
+                <RotatingLines
+                  strokeColor="white"
+                  strokeWidth={5}
+                  animationDuration={0.75}
+                  width={40}
+                  visible
+                />
+              ) : (
+                "Create"
+              )}
+            </Button>
+          </Grid>
+        </form>
+        </Paper>
 
-      </form>
       </Container>
-
     </section>
   );
 };
 
 export default CreateOrder;
+
 
 

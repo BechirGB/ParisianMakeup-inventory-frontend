@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSellingorder, fetchSellingorders } from "../../redux/apiCalls/sellingorderApiCall";
+import { deleteSellingorder,fetchSellingOrdersBetweenDates, fetchSellingorders } from "../../redux/apiCalls/sellingorderApiCall";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -25,9 +25,11 @@ const formatDate = (dateString) => {
 
 const SellingordersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { sellingorders } = useSelector((state) => state.sellingorder);
+  const { sellingorders ,totalSales} = useSelector((state) => state.sellingorder);
 
   useEffect(() => {
     dispatch(fetchSellingorders());
@@ -81,6 +83,9 @@ const SellingordersTable = () => {
         swal("The order is safe!");
       }
     });
+  };
+  const handleFetchSellingOrdersBetweenDates = () => {
+    dispatch(fetchSellingOrdersBetweenDates(startDate, endDate));
   };
 
   const ExpandedContent = ({ data }) => {
@@ -157,7 +162,7 @@ const SellingordersTable = () => {
     },
     {
       name: "Total Price",
-      selector: (row) => row.totalPrice,
+      selector: (row) => row.totalPrice.toFixed(2),
       sortable: true,
     },
 
@@ -170,6 +175,14 @@ const SellingordersTable = () => {
       name: "Actions",
       cell: (row) => (
         <div>
+        
+          <IconButton
+            color="success"
+            size="small"
+            onClick={() => handleUpdate(row.id)}
+          >
+            <EditIcon />
+          </IconButton>
           <IconButton
             color="error"
             size="small"
@@ -177,13 +190,6 @@ const SellingordersTable = () => {
             onClick={() => handleDelete(row.id)}
           >
             <DeleteIcon />
-          </IconButton>
-          <IconButton
-            color="success"
-            size="small"
-            onClick={() => handleUpdate(row.id)}
-          >
-            <EditIcon />
           </IconButton>
           <IconButton
             size="small"
@@ -212,6 +218,34 @@ const SellingordersTable = () => {
           subHeader
           subHeaderComponent={
             <div className="subheader">
+              <div className="date-filter-container">
+            <TextField
+              label="Start Date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label="End Date"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleFetchSellingOrdersBetweenDates}
+              style={{ marginLeft: "16px" }}
+            >
+              Fetch Orders
+            </Button>
+          </div>
+          <br></br>
               <div
                 className="subheader-content"
                 style={{ display: "flex", alignItems: "center" }}
@@ -231,6 +265,9 @@ const SellingordersTable = () => {
             </div>
           }
         />
+        <div className="total-purchase">
+          <Typography>Total Sales:{totalSales ? totalSales.toFixed(2) : 0}</Typography>
+        </div>
       </div>
     </section>
   );

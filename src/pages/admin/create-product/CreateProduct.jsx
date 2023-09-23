@@ -7,9 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
-import { TextField, Button,  Container,
-  Select, MenuItem, Grid, InputLabel,FormControl } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete"; // Import MUI Autocomplete
+import { TextField, Button, Container,
+   Grid,Paper  } from "@mui/material";
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
@@ -21,17 +20,16 @@ const CreateProduct = () => {
   const [sale_Price, setsale_Price] = useState("");
   const [link, setLink] = useState("");
 
-  const [sale_PriceError, setsale_PriceError] = useState("");
-  const [nameError, setNameError] = useState("");
+
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
     if (!name.trim()) {
-      setNameError("Product Name is required");
+      toast.error("Product Name is required");
+
       return;
-    } else {
-      setNameError("");
+    
     }
     if (!brand.trim()) {
       toast.error("Product Brand is required");
@@ -43,6 +41,10 @@ const CreateProduct = () => {
 
       return;
    
+    }
+    if (isNaN(parseFloat(sale_Price))) {
+      toast.error("Sale Price must be a number");
+      return;
     }
 
     const productData = {
@@ -68,6 +70,8 @@ const CreateProduct = () => {
   return (
     <section className="product-container">
           <AdminSidebar />
+          <Container maxWidth="lg">
+        <Paper elevation={1} style={{ padding: "20px" }}>
       <form onSubmit={formSubmitHandler} className="create-product-form">
         
         <h1> Add Product</h1>
@@ -80,7 +84,6 @@ const CreateProduct = () => {
         <br></br>
         <TextField
           label="Product Brand"
-          className="create-product-input"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
         />
@@ -88,11 +91,9 @@ const CreateProduct = () => {
 
         <TextField
           label="Product sale_Price"
-          type="number"
           value={sale_Price}
           onChange={(e) => setsale_Price(e.target.value)}
         />
-                {sale_PriceError && <p className="error-message">{sale_PriceError}</p>}
 
                 <br></br>
 
@@ -124,7 +125,10 @@ const CreateProduct = () => {
           </Button>
                   </Grid>
       </form>
+      </Paper>
+</Container>
     </section>
+
   );
 };
 

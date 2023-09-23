@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../../forms/form.css";
 import AdminSidebar from "../AdminSidebar";
+import { TextField,Grid, Button ,Container,Paper} from "@mui/material"; // Import MUI TextField and Button
 
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+
+
+
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useDispatch } from "react-redux";
@@ -19,7 +21,7 @@ const AddUserPage = () => {
     username: "",
     email: "",
     password: "",
-    isAdmin: false, // Default role is user
+    isAdmin: false, 
   });
 
   const handleChange = (e) => {
@@ -46,13 +48,12 @@ const AddUserPage = () => {
   return (
     <section className="table-container">
     <AdminSidebar />
-      <h1 className="form-title">Create new account</h1>
+    <Container maxWidth="lg">
+<Paper elevation={1} style={{ padding: "20px" }}>
       <form onSubmit={handleSubmit}>
-        <div className="input-container">
-          <label htmlFor="username" className="form-label">
-            Username
-          </label>
+     <Grid>
           <TextField
+          fullWidth
             type="text"
             id="username"
             name="username"
@@ -60,12 +61,12 @@ const AddUserPage = () => {
             value={formData.username}
             onChange={handleChange}
           />
-        </div>
-        <div className="input-container">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
+        </Grid>
+        <br></br>
+        <Grid>
+
           <TextField
+          fullWidth
             type="email"
             id="email"
             name="email"
@@ -73,12 +74,11 @@ const AddUserPage = () => {
             value={formData.email}
             onChange={handleChange}
           />
-        </div>
-        <div className="input-container">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
+                  </Grid>
+<br></br>
+      <Grid>
           <TextField
+          fullWidth
             type="password"
             id="password"
             name="password"
@@ -86,7 +86,7 @@ const AddUserPage = () => {
             value={formData.password}
             onChange={handleChange}
           />
-        </div>
+          </Grid>
         <div className="input-container">
           <FormControlLabel
             control={
@@ -104,6 +104,8 @@ const AddUserPage = () => {
           Register
         </Button>
       </form>
+      </Paper>
+      </Container>
     </section>
   );
 };

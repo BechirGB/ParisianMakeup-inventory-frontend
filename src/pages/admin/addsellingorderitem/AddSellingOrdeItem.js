@@ -9,6 +9,8 @@ import {
 import { AddSellingOrderItem } from "../../../redux/apiCalls/sellingorderitemApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
+import Autocomplete from "@mui/material/Autocomplete"; 
+
 import AdminSidebar from "../AdminSidebar";
 
 import {
@@ -35,7 +37,26 @@ const AddSellingOrderItemPage = () => {
   const { products } = useSelector((state) => state.product);
 
   const [sellingorderItems, setSellingorderItems] = useState([]);
+  const handleProductSelection = (productId, index) => {
+    const updatedItems = [...sellingorderItems];
+    updatedItems[index].product = productId;
+    setSellingorderItems(updatedItems);
+  };
 
+  const handleAddOrderItem = () => {
+    setSellingorderItems([
+      ...sellingorderItems,
+      { product: "", price: "", quantity: "" },
+    ]);
+  };
+
+  const handleCancelOrderItem = () => {
+    if (sellingorderItems.length > 1) {
+      const updatedItems = [...sellingorderItems];
+      updatedItems.pop();
+      setSellingorderItems(updatedItems);
+    }
+  };
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -78,80 +99,84 @@ const AddSellingOrderItemPage = () => {
      
       <Paper elevation={3}>
         <form onSubmit={formSubmitHandler} style={{ padding: "20px" }}>
-          {sellingorderItems.map((item, index) => (
-            <Grid container spacing={2} key={index}>
-              <Grid item xs={4}>
-                <FormControl fullWidth variant="outlined">
-                  <Select
-                    value={item.product}
+        <Grid item xs={12}>
+              <div
+            className="order-items-container"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            {sellingorderItems.map((item, index) => (
+              <Grid container spacing={4} key={index}>
+                <Grid item xs={6}>
+                  <FormControl fullWidth variant="outlined"
+                  >
+                  
+                    <Autocomplete
+                      options={products}
+                      getOptionLabel={(product) =>
+                        `${product.name}, ${product.brand}`
+                      }
+                      value={
+                        products.find((p) => p._id === item.product) || null
+                      }
+                      onChange={(e, newValue) =>
+                        handleProductSelection(
+                          newValue ? newValue._id : "",
+                          index
+                        )
+                      }
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </FormControl>
+                </Grid>
+                <br></br>
+                <Grid item xs={1.5}>
+                  <TextField
+                    label={`Quantity ${index + 1}`}
+                    value={item.quantity}
                     onChange={(e) => {
                       const updatedItems = [...sellingorderItems];
-                      updatedItems[index].product = e.target.value;
+                      updatedItems[index].quantity = e.target.value;
                       setSellingorderItems(updatedItems);
                     }}
-                  >
-                    <MenuItem disabled value="">
-                      Select A product
-                    </MenuItem>
-                    {products.map((product) => (
-                      <MenuItem key={product._id} value={product._id}>
-                        {product.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                  />
+                </Grid>
+                <Grid item xs={1.5}>
+                  <TextField
+                    label={`Price ${index + 1}`}
+                    value={item.price}
+                    onChange={(e) => {
+                      const updatedItems = [...sellingorderItems];
+                      updatedItems[index].price = e.target.value;
+                      setSellingorderItems(updatedItems);
+                    }}
+                  />
+                </Grid>
+               
               </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  type="number"
-                  label={`Quantity ${index + 1}`}
-                  variant="outlined"
-                  value={item.quantity}
-                  onChange={(e) => {
-                    const updatedItems = [...sellingorderItems];
-                    updatedItems[index].quantity = e.target.value;
-                    setSellingorderItems(updatedItems);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  type="number"
-                  label={`Price ${index + 1}`}
-                  variant="outlined"
-                  value={item.price}
-                  onChange={(e) => {
-                    const updatedItems = [...sellingorderItems];
-                    updatedItems[index].price = e.target.value;
-                    setSellingorderItems(updatedItems);
-                  }}
-                />
-              </Grid>
-            </Grid>
-          ))}
-          <Box mt={2} mb={2}>
+            ))}
+            <br></br>
+          </div>
+          <div className="order-actions">
             <Button
               variant="contained"
               color="primary"
-              onClick={() =>
-                setSellingorderItems([
-                  ...sellingorderItems,
-                  { product: "", quantity: 0, price: 0 },
-                ])
-              }
+              onClick={handleAddOrderItem}
             >
               Add Selling Order Item
             </Button>
+            <br></br>
+            <br></br>
             <Button
               variant="contained"
               color="secondary"
-              onClick={() =>
-                setSellingorderItems([{ product: "", quantity: 0, price: 0 }])
-              }
+              onClick={handleCancelOrderItem}
             >
-              Cancel
+              Cancel Last Item
             </Button>
-          </Box>
+          </div>
+          <br></br>
+              </Grid>
+        
           <Button type="submit" variant="contained" color="primary">
             {loading ? (
               <RotatingLines

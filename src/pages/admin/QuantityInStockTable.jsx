@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getQuantityInStock } from "../../redux/apiCalls/quantityinstockApiCall";
 import "./admin-table.css";
-import DataTable from "react-data-table-component"; // Import DataTable
+import DataTable from "react-data-table-component"; 
 import TextField from "@mui/material/TextField";
 
 const QuantityInStocksTable = () => {
@@ -51,7 +51,6 @@ const QuantityInStocksTable = () => {
   return (
     <section className="table-container-quantity">
       <div className="table-wrapper">
-        <h1 className="table-title">Quantité dans le stock</h1>
         <TextField
           fullWidth
           label="Search by Name, or Brand"

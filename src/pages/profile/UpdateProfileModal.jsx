@@ -8,6 +8,8 @@ import {
   Typography,
   TextField,
   Button,
+  Grid,
+  Paper,
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
@@ -45,11 +47,14 @@ const UpdateProfileModal = () => {
     <section className="table-container">
     <AdminSidebar />
     <Container>
+    <Paper elevation={1} style={{ padding: "20px" }}>
+
     <br></br>
-      <Typography variant="h4" gutterBottom>
-        Update Your Profile
-      </Typography>
+      <h1 >
+        Update  User
+      </h1>
       <form onSubmit={formSubmitHandler}>
+      <Grid>
         <TextField
           label="Email"
           variant="outlined"
@@ -59,7 +64,10 @@ const UpdateProfileModal = () => {
           placeholder="Email"
           className="form-label"
         />
+        </Grid>
 <br></br>
+<Grid>
+
         <TextField
           label="Username"
           variant="outlined"
@@ -69,7 +77,11 @@ const UpdateProfileModal = () => {
           placeholder="Username"
           className="form-label"
         />
+                </Grid>
+
 <br></br>
+<Grid>
+
         <TextField
           type="password"
           label="Password"
@@ -80,6 +92,7 @@ const UpdateProfileModal = () => {
           placeholder="Password"
           className="update-profile-input"
         />
+                </Grid>
 
         <FormControlLabel
           control={
@@ -114,6 +127,8 @@ const UpdateProfileModal = () => {
           Update Profile
         </Button>
       </form>
+      </Paper>
+
     </Container>
     </section>
 

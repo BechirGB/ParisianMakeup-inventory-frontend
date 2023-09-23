@@ -7,11 +7,9 @@ import StoreIcon from "@mui/icons-material/Store";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useContext } from "react"; 
 import { useNavigate } from "react-router-dom";
 
 import { logoutUser } from "../../redux/apiCalls/authApiCall";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
@@ -27,6 +25,7 @@ const AdminSidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
+      <br></br>
         <Link to="/dashboard" style={{ textDecoration: "none" }}>
           <span className="logo">The Parisian Makeup Store</span>
         </Link>

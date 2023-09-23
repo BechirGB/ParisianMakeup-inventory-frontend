@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Grid, Typography, TextField, Button } from "@mui/material";
+import { Container, Grid, Typography,Paper,
+   TextField, Button } from "@mui/material";
 import AdminSidebar from "../AdminSidebar";
 import { updateOrder, fetchOrders, fetchSingleOrder } from "../../../redux/apiCalls/orderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
@@ -60,7 +61,9 @@ const UpdateOrderPage = () => {
   return (
     <section className="table-container">
       <AdminSidebar />
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
+      <Paper elevation={2} style={{ padding: "20px" }}>
+
         <form onSubmit={formSubmitHandler}>
           <h1>Edit Order</h1>
           <Grid>
@@ -103,6 +106,7 @@ const UpdateOrderPage = () => {
             )}
           </Button>
         </form>
+        </Paper>
       </Container>
     </section>
   );

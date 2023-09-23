@@ -1,34 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import AdminSidebar from "./AdminSidebar";
 import DataTable from "react-data-table-component";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
- import Button from '@mui/material/Button';
-
+import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrders, deleteOrder } from "../../redux/apiCalls/orderApiCall";
+import { fetchOrders, deleteOrder, fetchOrdersBetweenDates } from "../../redux/apiCalls/orderApiCall";
 import { deleteOrderItem } from "../../redux/apiCalls/orderitemApiCall";
-import Typography from "@mui/material/Typography"; 
+import Typography from "@mui/material/Typography";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const options = { year: "numeric", month: "long", day: "numeric" };
   return date.toLocaleDateString(undefined, options);
 };
 
-
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { orders } = useSelector((state) => state.order);
+  const { orders, totalPurchase } = useSelector((state) => state.order);
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -82,12 +82,14 @@ const OrdersTable = () => {
         swal("Poof! The order has been deleted!", {
           icon: "success",
         });
-      
       } else {
         swal("The order is safe!");
       }
     });
-    
+  };
+
+  const handleFetchOrdersBetweenDates = () => {
+    dispatch(fetchOrdersBetweenDates(startDate, endDate));
   };
 
   const ExpandedContent = ({ data }) => {
@@ -107,20 +109,12 @@ const OrdersTable = () => {
           <tbody>
             {data.orderItems.map((orderItem) => (
               <tr key={orderItem._id}>
-                <td>
-                    {orderItem.product.name}
-                </td>
-                <td>
-                    {orderItem.product.brand}
-                </td>
-                <td>
-                    {orderItem.quantity}
-                </td>
-                <td>
-                    {orderItem.quantity_in_tunisia}
-                </td>
-                <td>{orderItem.price}.00</td>
-                <td>{orderItem.discount}%</td>
+                <td>{orderItem.product.name}</td>
+                <td>{orderItem.product.brand}</td>
+                <td>{orderItem.quantity}</td>
+                <td>{orderItem.quantity_in_tunisia !== null && orderItem.quantity_in_tunisia !== 0 ? orderItem.quantity_in_tunisia : 0}</td>
+                <td>{orderItem.price}</td>
+                <td>{orderItem.discount !==null && orderItem.discount !== 0 ? orderItem.discount: 0 }%</td>
                 <td>
                   <IconButton
                     color="error"
@@ -149,18 +143,18 @@ const OrdersTable = () => {
   };
 
   const filteredOrders =
-  Array.isArray(orders) && orders.length > 0
-    ? orders.filter((order) =>
-        order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.order_Id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.orderItems.some(
-          (item) =>
-            item.product &&
-            item.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.product.brand.toLowerCase().includes(searchTerm.toLowerCase())  
+    Array.isArray(orders) && orders.length > 0
+      ? orders.filter((order) =>
+          order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.order_Id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.orderItems.some(
+            (item) =>
+              item.product &&
+              item.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              item.product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+          )
         )
-      )
-    : [];
+      : [];
 
   const columns = [
     {
@@ -173,19 +167,16 @@ const OrdersTable = () => {
     },
     {
       name: "Total Price",
-      selector: (row) => row.totalPrice,
+      selector: (row) => row.totalPrice.toFixed(2),
     },
     {
       name: "Date Ordered",
       selector: (row) => formatDate(row.dateOrdered),
     },
- 
     {
       name: "Actions",
       cell: (row) => (
         <div>
-          
-
           <IconButton
             variant="outlined"
             color="success"
@@ -194,7 +185,6 @@ const OrdersTable = () => {
           >
             <EditIcon />
           </IconButton>
-
           <IconButton
             variant="outlined"
             color="error"
@@ -220,6 +210,7 @@ const OrdersTable = () => {
     <section className="table-container">
       <AdminSidebar />
       <div className="table-wrapper">
+        
         <DataTable
           className="table-color"
           title="La liste des achats "
@@ -232,31 +223,66 @@ const OrdersTable = () => {
           subHeader
           subHeaderComponent={
             <div className="subheader">
-              <div
-                className="subheader-content"
-                style={{ display: "flex", alignItems: "center" }}
-              >
-                <TextField
-                  fullWidth
-                  placeholder="Search by ID ,Store, Name,Brand"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  variant="outlined"
-                  style={{ marginRight: "16px" }}
-                />
-                <Button variant="outlined" onClick={handleAddNewOrder}>
-                  Add New Order
-                </Button>
-              </div>
-            </div>
-          }
+          <div className="date-filter-container">
+            <TextField
+              label="Start Date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label="End Date"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleFetchOrdersBetweenDates}
+              style={{ marginLeft: "16px" }}
+            >
+              Fetch Orders
+            </Button>
+          </div>
+          <br></br>
+          <div
+            className="subheader-content"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <TextField
+              fullWidth
+              placeholder="Search by ID, Store, Name, Brand"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              variant="outlined"
+              style={{ marginRight: "16px" }}
+            />
+            <Button variant="outlined" onClick={handleAddNewOrder}>
+              Add New Order
+            </Button>
+          </div>
+        </div>}
         />
+          
+        <div className="total-purchase">
+        <Typography>Total Purchases: {totalPurchase ? totalPurchase.toFixed(2) : 0}</Typography>
+
+        </div>
       </div>
     </section>
   );
 };
 
 export default OrdersTable;
+
+
+
 
 
 

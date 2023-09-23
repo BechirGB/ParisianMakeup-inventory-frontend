@@ -7,7 +7,9 @@ export function fetchOrders() {
   return async (dispatch) => {
     try {
       const { data } = await request.get("/api/orders");
-      dispatch(OrderActions.setOrders(data));
+      dispatch(OrderActions.setOrders(data.orders));
+      dispatch(OrderActions.setTotalPurchase(data.totalPurchase));
+
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -78,6 +80,17 @@ export function deleteOrder(OrderId) {
       });
       dispatch(OrderActions.deleteOrder(data.OrderId));
       toast.success(data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+}
+export function fetchOrdersBetweenDates(startDate, endDate) {
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await request.get(`/api/orders/total?startDate=${startDate}&endDate=${endDate}`);
+      dispatch(OrderActions.setOrders(data.orders));
+      dispatch(OrderActions.setTotalPurchase(data.totalPurchase));
     } catch (error) {
       toast.error(error.response.data.message);
     }

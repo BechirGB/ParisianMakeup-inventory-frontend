@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Grid, Typography, TextField, Button } from "@mui/material";
+import { Container, Grid, Typography,Paper, TextField, Button } from "@mui/material";
 import { updateSellingOrder, fetchSellingorders, fetchSingleSellingorder } from "../../../redux/apiCalls/sellingorderApiCall";
 import { fetchProducts } from "../../../redux/apiCalls/productApiCall";
 import { RotatingLines } from "react-loader-spinner";
@@ -55,7 +55,9 @@ const UpdateSellingOrderPage = () => {
   return (
     <section className="table-container">
       <AdminSidebar />
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
+      <Paper elevation={2} style={{ padding: "20px" }}>
+
         <form onSubmit={formSubmitHandler}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -99,6 +101,7 @@ const UpdateSellingOrderPage = () => {
             </Grid>
           </Grid>
         </form>
+        </Paper>
       </Container>
     </section>
   );
