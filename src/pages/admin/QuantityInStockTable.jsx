@@ -25,10 +25,13 @@ const QuantityInStocksTable = () => {
           
       : [];
 
+
   const columns = [
     {
       name: "Name",
       selector: (row) => row.name,
+      minWidth: "150px",
+      width: "550px",
     },
     {
       name: "Brand",
@@ -70,6 +73,8 @@ const QuantityInStocksTable = () => {
               highlightOnHover
               responsive
               pagination
+           
+
             />
           </>
         )}

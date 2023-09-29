@@ -63,6 +63,10 @@ tr:hover {
     display: flex;
     align-items: center;
 }
+.link-cell {
+  max-height: 60px; 
+  overflow-y: auto;
+}
 
 .table-user-image {
     width: 40px;

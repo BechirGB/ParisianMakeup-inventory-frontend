@@ -35,12 +35,15 @@ const ProductsTable = () => {
           product.brand.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
+   
 
   const columns = [
     {
       name: 'Name',
       selector: (row) => row.name,
       sortable: true,
+      minWidth: "150px",
+      width: "450px",
     },
     {
       name: 'Brand',
@@ -54,11 +57,16 @@ const ProductsTable = () => {
     },
     {
       name: 'Link',
+   
       cell: (row) => (
+        <div className="link-cell">
         <a href={row.link} target="_blank" rel="noopener noreferrer">
           {row.link}
         </a>
+      </div>
+       
       ),
+      
     },
     {
       name: 'Actions',
@@ -79,13 +87,14 @@ const ProductsTable = () => {
     <section className="table-container">
       <AdminSidebar />
       <div className="table-wrapper">
-        <div className="table-scroll">
+        <div >
           <DataTable
             title="Liste Des Produits"
             columns={columns}
             data={filteredProducts}
             pagination
             subHeader
+
             subHeaderComponent={
               <div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>

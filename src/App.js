@@ -29,18 +29,11 @@ import { useDispatch  } from "react-redux";
 
 import Unauthorized from "./pages/not authorized/Not authorized";
 function App() {
-  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
 
 
-  const { user, tokenExpiration } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (tokenExpiration && new Date(tokenExpiration) < new Date()) {
-      dispatch(authActions.logout());
-       
-
-    }
-  }, [dispatch, tokenExpiration]);
 
   return (
     <BrowserRouter>
