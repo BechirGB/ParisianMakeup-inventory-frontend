@@ -160,18 +160,26 @@ const OrdersTable = () => {
     {
       name: "Order Id",
       selector: (row) => row.order_Id,
+      sortable: true,
+
     },
     {
       name: "Store",
       selector: (row) => row.store,
+      sortable: true,
+
     },
     {
       name: "Total Price",
       selector: (row) => row.totalPrice.toFixed(2),
+      sortable: true,
+
     },
     {
       name: "Date Ordered",
       selector: (row) => formatDate(row.dateOrdered),
+      sortable: true,
+
     },
     {
       name: "Actions",

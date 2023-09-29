@@ -45,7 +45,7 @@ const CreateOrder = () => {
   const handleAddOrderItem = () => {
     setOrderItems([
       ...orderItems,
-      { product: "", price: 0, quantity: 0, discount: 0 },
+      { product: "", price: "", quantity: "", discount: "" },
     ]);
   };
 

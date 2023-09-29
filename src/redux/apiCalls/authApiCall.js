@@ -8,20 +8,21 @@ export function loginUser(user) {
   return async (dispatch) => {
     try {
       const { data } = await request.post('/api/auth/login', user);
-      const tokenExpiration = 7100000; 
-      const tokenExpirationTimestamp = Date.now() + tokenExpiration * 1000; 
+      const tokenExpiration = 6300000;; 
+      const tokenExpirationTimestamp = Date.now() + tokenExpiration ; // Calculate the token expiration timestamp
 
       dispatch(authActions.login(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
-      localStorage.setItem('tokenExpiration', tokenExpirationTimestamp); // Store the expiration timestamp
+      localStorage.setItem('tokenExpiration', tokenExpirationTimestamp);
 
-      const timeUntilExpiration = tokenExpiration ;
+      const timeUntilExpiration = tokenExpiration ; 
       setTimeout(() => {
         dispatch(authActions.logout());
         localStorage.removeItem('userInfo');
         localStorage.removeItem('tokenExpiration');
       }, timeUntilExpiration);
 
+      console.log(tokenExpiration);
     } catch (error) {
       toast.error(error.response.data.message);
     }
