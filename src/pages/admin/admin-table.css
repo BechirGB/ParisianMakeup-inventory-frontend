@@ -5,9 +5,12 @@
     ;
 }
 .table-container-quantity{
-  display: flex;
-  height:700px;
-  width: 1200px;
+  display:flex;
+  width: 100%;
+  height: 100%;
+background-color: white;
+
+
   ;
 }
 .table-scroll {
@@ -18,7 +21,8 @@
 .table-wrapper {
     flex: 10;
     padding: 500px;
-    background-color:white
+    background-color:white;
+    height: 100%;
 
 
 }
@@ -80,7 +84,11 @@ tr:hover {
     font-size: 17px;
     margin-left: 5px;
 }
+.total-purchase{
+  color: #0056b3;
+  font-weight: 200p;
 
+}
 .table-button-group {
     display: flex;
     align-items: center;

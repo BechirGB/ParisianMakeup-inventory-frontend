@@ -4,6 +4,7 @@ import { getQuantityInStock } from "../../redux/apiCalls/quantityinstockApiCall"
 import "./admin-table.css";
 import DataTable from "react-data-table-component"; 
 import TextField from "@mui/material/TextField";
+import AdminSidebar from "./AdminSidebar";
 
 const QuantityInStocksTable = () => {
   const dispatch = useDispatch();
@@ -52,8 +53,11 @@ const QuantityInStocksTable = () => {
   ];
 
   return (
-    <section className="table-container-quantity">
-      <div className="table-wrapper">
+    <section   className="table-container">
+              <AdminSidebar/>   
+
+      <div className="table-wrapper" >
+      
         <TextField
           fullWidth
           label="Search by Name, or Brand"

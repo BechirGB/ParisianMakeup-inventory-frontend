@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders, deleteOrder, fetchOrdersBetweenDates } from "../../redux/apiCalls/orderApiCall";
 import { deleteOrderItem } from "../../redux/apiCalls/orderitemApiCall";
 import Typography from "@mui/material/Typography";
+import { red } from "@mui/material/colors";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -279,7 +280,7 @@ const OrdersTable = () => {
         />
           
         <div className="total-purchase">
-        <Typography>Total Purchases: {totalPurchase ? totalPurchase.toFixed(2) : 0}</Typography>
+        <Typography >Total Purchases: {totalPurchase ? totalPurchase.toFixed(2) : 0}</Typography>
 
         </div>
       </div>
