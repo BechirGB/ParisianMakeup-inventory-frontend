@@ -14,7 +14,7 @@ const UpdateOrderPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, isOrderUpdated, orders } = useSelector((state) => state.order);
+  const { loading , isOrderUpdated, orders } = useSelector((state) => state.order);
 
   const [store, setStore] = useState("");
   const [dateOrdered, setDateOrdered] = useState("");
@@ -54,7 +54,7 @@ const UpdateOrderPage = () => {
 
   useEffect(() => {
     if (isOrderUpdated) {
-      navigate("/orders");
+      navigate("/orders-table");
     }
   }, [isOrderUpdated, navigate]);
 

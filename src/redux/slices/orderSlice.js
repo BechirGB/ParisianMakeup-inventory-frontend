@@ -7,6 +7,7 @@ const OrderSlice = createSlice({
     ordersCount: null,
     ordersTotalPurchases: [], // Changed from ordersTotalPurchases to ordersTotalPurchasesValue
     ordersCate: [],
+    updateOrder:[],
     loading: false,
     isorderCreated: false,
     isorderUpdated: false,
@@ -26,6 +27,9 @@ const OrderSlice = createSlice({
     addOrder(state, action) {
       state.orders.push(action.payload);
     },
+    updateOrder(state,action){
+      state.updateOrder=action.payload;
+    },
     setLoading(state) {
       state.loading = true;
     },
@@ -39,6 +43,7 @@ const OrderSlice = createSlice({
     clearIsOrderCreated(state) {
       state.isOrderCreated = false;
     },
+    
     setIsOrderUpdated(state) {
       state.isOrderUpdated = true;
       state.loading = false;

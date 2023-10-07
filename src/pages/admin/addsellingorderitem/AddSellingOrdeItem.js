@@ -62,7 +62,7 @@ const AddSellingOrderItemPage = () => {
 
     if (
       !sellingorderItems.every(
-        (item) => item.product && item.quantity !== 0 && item.price !== 0
+        (item) => item.product && item.quantity !== "" && item.price !== ""
       )
     )
       return toast.error(

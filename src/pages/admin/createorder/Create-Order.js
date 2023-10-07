@@ -61,7 +61,7 @@ const CreateOrder = () => {
     e.preventDefault();
     if (order_Id.trim() === "") return toast.error("order_id is required");
     if (store.trim() === "") return toast.error("Order store is required");
-    if (!orderItems.every((item) => item.product && item.quantity !== 0))
+    if (!orderItems.every((item) => item.product !=="" && item.price !== "" && item.quantity!==""))
       return toast.error(
         "All order items must have a product and quantity"
       );
@@ -79,8 +79,10 @@ const CreateOrder = () => {
     setOrderItems([{ product: "", price: "", quantity: "", discount: "" }]);
     setDateOrdered("");
     dispatch(createOrder(orderData)).then(() => {
+      if (isOrderCreated) {
+     
       dispatch(fetchOrders());
-      navigate("/orders-table");
+      navigate("/orders-table");}
     });
   };
 

@@ -36,6 +36,7 @@ export function createOrder(newOrder) {
         }
       });
       dispatch(OrderActions.addOrder(data));
+      dispatch(OrderActions.setIsOrderCreated(true));
       toast.success("order created successfully");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -62,7 +63,8 @@ export function updateOrder(neworder,orderId) {
           Authorization: "Bearer " + getState().auth.user.token,
         }
       });
-      dispatch(OrderActions.setIsorderUpdated(data));
+      dispatch(OrderActions.updateOrder(data));
+      dispatch(OrderActions.setIsOrderUpdated(true));
     } catch (error) {
       toast.error(error.response.data.message);
     }

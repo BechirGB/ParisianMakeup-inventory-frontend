@@ -68,8 +68,11 @@ const CreateSelling = () => {
     setOrderItems([{ product: "", quantity: "", price: "" }]);
     setDate("");
     dispatch(createSellingorder(sellingorderData)).then(() => {
+      if (issellingorderCreated) {
+      
       dispatch(fetchSellingorders());
       navigate("/sellings-table");
+      }
     });
   };
 

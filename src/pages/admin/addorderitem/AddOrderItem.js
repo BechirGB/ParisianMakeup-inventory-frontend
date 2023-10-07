@@ -26,7 +26,7 @@ const AddOrderItemPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, isOrderUpdated } = useSelector((state) => state.order);
+  const { loading, isOrderItemCreated } = useSelector((state) => state.orderitem);
   const { products } = useSelector((state) => state.product);
 
   const [orderItems, setOrderItems] = useState([
@@ -56,7 +56,7 @@ const AddOrderItemPage = () => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
-    if (!orderItems.every((item) => item.product && item.quantity !== 0))
+    if (!orderItems.every((item) => item.product &&item.price !=="" && item.quantity !== ""))
       return toast.error("All order items must have a product and quantity");
 
     const orderData = {
@@ -64,8 +64,11 @@ const AddOrderItemPage = () => {
     };
 
     dispatch(AddOrderItem(orderData, orderId)).then(() => {
+      if (isOrderItemCreated) {
+      
       dispatch(fetchOrders());
       navigate("/orders-table");
+      }
     });
   };
 
@@ -75,10 +78,10 @@ const AddOrderItemPage = () => {
   }, [dispatch, orderId]);
 
   useEffect(() => {
-    if (isOrderUpdated) {
+    if (isOrderItemCreated) {
       navigate("/orders-table");
     }
-  }, [isOrderUpdated, navigate]);
+  }, [isOrderItemCreated, navigate]);
 
 
 
