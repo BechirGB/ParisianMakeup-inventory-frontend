@@ -63,7 +63,7 @@ const CreateOrder = () => {
     if (store.trim() === "") return toast.error("Order store is required");
     if (!orderItems.every((item) => item.product !=="" && item.price !== "" && item.quantity!==""))
       return toast.error(
-        "All order items must have a product and quantity"
+        "All order items must have a product , quantity and price"
       );
     if (dateOrdered.trim() === "") return toast.error("Date is required");
 

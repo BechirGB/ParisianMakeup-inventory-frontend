@@ -111,7 +111,6 @@ const OrdersTable = () => {
   };
 
   const ExpandedContent = ({ data }) => {
-    const { greenCount, redCount } = calculateCircleCounts(data.orderItems);
 
     return (
       <div className="expanded-content">
@@ -175,13 +174,7 @@ const OrdersTable = () => {
               </tr>
             ))}
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan="7">
-                Green Check Circles: {greenCount}, Red Circles: {redCount}
-              </td>
-            </tr>
-          </tfoot>
+          
         </table>
       </div>
     );
