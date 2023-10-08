@@ -221,7 +221,7 @@ const OrdersTable = () => {
 
     },
     {
-      name: "Totaly Arrived",
+      name: "Fully Arrived",
       selector: (row) => {
         const { greenCount, redCount } = calculateCircleCounts(row.orderItems);
      
