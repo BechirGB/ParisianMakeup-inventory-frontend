@@ -6,6 +6,10 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import CancelIcon from "@mui/icons-material/Cancel";
+import { green, orange, red } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import swal from "sweetalert";
@@ -13,7 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders, deleteOrder, fetchOrdersBetweenDates } from "../../redux/apiCalls/orderApiCall";
 import { deleteOrderItem } from "../../redux/apiCalls/orderitemApiCall";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -30,6 +33,20 @@ const OrdersTable = () => {
   const navigate = useNavigate();
 
   const { orders, totalPurchase } = useSelector((state) => state.order);
+  const calculateCircleCounts = (orderItems) => {
+    let greenCount = 0;
+    let redCount = 0;
+
+    orderItems.forEach((orderItem) => {
+      if (orderItem.quantity === orderItem.quantity_in_tunisia) {
+        greenCount++;
+      } else {
+        redCount++;
+      }
+    });
+
+    return { greenCount, redCount };
+  };
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -94,6 +111,8 @@ const OrdersTable = () => {
   };
 
   const ExpandedContent = ({ data }) => {
+    const { greenCount, redCount } = calculateCircleCounts(data.orderItems);
+
     return (
       <div className="expanded-content">
         <table>
@@ -105,6 +124,7 @@ const OrdersTable = () => {
               <th>Quantity In Tunisia</th>
               <th>Price</th>
               <th>Discount</th>
+              <th>Available In Tunisia</th>
             </tr>
           </thead>
           <tbody>
@@ -113,9 +133,26 @@ const OrdersTable = () => {
                 <td>{orderItem.product.name}</td>
                 <td>{orderItem.product.brand}</td>
                 <td>{orderItem.quantity}</td>
-                <td>{orderItem.quantity_in_tunisia !== null && orderItem.quantity_in_tunisia !== 0 ? orderItem.quantity_in_tunisia : 0}</td>
+                <td>
+                  {orderItem.quantity_in_tunisia !== null &&
+                  orderItem.quantity_in_tunisia !== 0
+                    ? orderItem.quantity_in_tunisia
+                    : 0}
+                </td>
                 <td>{orderItem.price}</td>
-                <td>{orderItem.discount !==null && orderItem.discount !== 0 ? orderItem.discount: 0 }%</td>
+                <td>
+                  {orderItem.discount !== null && orderItem.discount !== 0
+                    ? `${orderItem.discount}%`
+                    : "0%"}
+                </td>
+                <td>
+                  {orderItem.quantity === orderItem.quantity_in_tunisia ? (
+                    <CheckCircleIcon style={{ color: green[500]   , fontSize: 16 }}  />
+                  ) : (
+                <CancelIcon style={{color: red[500]   , fontSize: 16 }} />
+
+                  )}
+                </td>
                 <td>
                   <IconButton
                     color="error"
@@ -138,10 +175,18 @@ const OrdersTable = () => {
               </tr>
             ))}
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="7">
+                Green Check Circles: {greenCount}, Red Circles: {redCount}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     );
   };
+  
 
   const filteredOrders =
     Array.isArray(orders) && orders.length > 0
@@ -182,6 +227,38 @@ const OrdersTable = () => {
       sortable: true,
 
     },
+    {
+      name: "Totaly Arrived",
+      selector: (row) => {
+        const { greenCount, redCount } = calculateCircleCounts(row.orderItems);
+     
+   
+        return (
+          <div>
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <span style={{ color: green[500], marginRight: "4px" }}>
+                <CheckCircleIcon style={{ fontSize: 18 }} />
+               <b> {greenCount}</b>  
+
+              </span>
+              <span style={{ color: red[500], marginRight: "4px" }}>
+                <CancelIcon style={{ fontSize: 18 }} />
+               <b> {redCount} </b> 
+
+              </span>
+              <span style={{ color: red[500], marginRight: "4px" }}>
+              {(redCount > greenCount || redCount !== 0)  && (
+                <ReportProblemIcon style={{ color:  orange[500], fontSize: 18 }} />
+              )}
+              </span>
+
+              </span>
+
+          </div>
+        );
+      },
+    },
+   
     {
       name: "Actions",
       cell: (row) => (
