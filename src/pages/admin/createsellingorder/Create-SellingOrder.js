@@ -64,13 +64,12 @@ const CreateSelling = () => {
       date,
     };
 
-    setDeliveryId("");
-    setOrderItems([{ product: "", quantity: "", price: "" }]);
-    setDate("");
     dispatch(createSellingorder(sellingorderData)).then(() => {
       if (issellingorderCreated) {
       
-      dispatch(fetchSellingorders());
+    setDeliveryId("");
+    setOrderItems([{ product: "", quantity: "", price: "" }]);
+    setDate("");
       navigate("/sellings-table");
       }
     });
@@ -82,9 +81,8 @@ const CreateSelling = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (issellingorderCreated) {
-      navigate("/sellings-table");
-    }
+   
+    
   }, [issellingorderCreated, navigate]);
 
   const cancelLastOrderItem = () => {

@@ -14,13 +14,9 @@ import {
   Button,
   Container,
   Paper,
-  Select,
-  MenuItem,
   Grid,
-  InputLabel,
   FormControl,
 } from "@mui/material";
-import Navbar from "../../../components/header/Navbar";
 import Autocomplete from "@mui/material/Autocomplete"; // Import Autocomplete
 
 const CreateOrder = () => {
@@ -74,15 +70,15 @@ const CreateOrder = () => {
       dateOrdered,
     };
 
-    setOrderId("");
-    setStore("");
-    setOrderItems([{ product: "", price: "", quantity: "", discount: "" }]);
-    setDateOrdered("");
+ 
     dispatch(createOrder(orderData)).then(() => {
       if (isOrderCreated) {
-     
-      dispatch(fetchOrders());
-      navigate("/orders-table");}
+        setOrderId("");
+        setStore("");
+        setOrderItems([{ product: "", price: "", quantity: "", discount: "" }]);
+        setDateOrdered("");
+        navigate("/orders-table");
+      }
     });
   };
 
@@ -91,11 +87,8 @@ const CreateOrder = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isOrderCreated) {
-      navigate("/orders-table");
-    }
+   
   }, [isOrderCreated, navigate]);
-
   return (
     <section className="table-container">
       <AdminSidebar />
