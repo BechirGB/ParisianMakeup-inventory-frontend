@@ -19,13 +19,15 @@ background-color: white;
 }
 
 .table-wrapper {
-    flex: 10;
-    padding: 500px;
-    background-color:white;
-    height: 100%;
-
-
+  flex: 10;
+  padding: 10px; 
+  background-color: white;
+  height: 100%;
+  overflow-x: auto;
+  max-height: 760px; 
+  overflow-y: auto;
 }
+
 .table-color{
   background-color:darkslategray
 }

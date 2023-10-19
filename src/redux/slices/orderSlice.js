@@ -5,14 +5,14 @@ const OrderSlice = createSlice({
   initialState: {
     orders: [],
     ordersCount: null,
-    ordersTotalPurchases: [], // Changed from ordersTotalPurchases to ordersTotalPurchasesValue
+    ordersTotalPurchases: [], 
     ordersCate: [],
     updateOrder:[],
     loading: false,
-    isorderCreated: false,
+    isorderCreated: true,
     isorderUpdated: false,
     order: null,
-    totalPurchase: null, // Renamed from ordersTotalPurchases to totalPurchase
+    totalPurchase: null, 
   },
   reducers: {
     setOrders(state, action) {

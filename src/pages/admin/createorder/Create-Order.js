@@ -71,15 +71,17 @@ const CreateOrder = () => {
     };
 
  
-    dispatch(createOrder(orderData)).then(() => {
+    dispatch(createOrder(orderData))
+    .then(() => {
+      setOrderId("");
+      setStore("");
+      setOrderItems([{ product: "", price: "", quantity: "", discount: "" }]);
+      setDateOrdered("");
       if (isOrderCreated) {
-        setOrderId("");
-        setStore("");
-        setOrderItems([{ product: "", price: "", quantity: "", discount: "" }]);
-        setDateOrdered("");
         navigate("/orders-table");
       }
     });
+  
   };
 
   useEffect(() => {
