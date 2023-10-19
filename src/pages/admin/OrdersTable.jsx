@@ -220,37 +220,32 @@ const OrdersTable = () => {
       sortable: true,
 
     },
-    {
-      name: "Fully Arrived",
-      selector: (row) => {
-        const { greenCount, redCount } = calculateCircleCounts(row.orderItems);
-     
-   
-        return (
-          <div>
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <span style={{ color: green[500], marginRight: "4px" }}>
-                <CheckCircleIcon style={{ fontSize: 18 }} />
-               <b> {greenCount}</b>  
+// Inside the Fully Arrived column definition
+{
+  name: "Fully Arrived",
+  selector: (row) => {
+    const { greenCount, redCount } = calculateCircleCounts(row.orderItems);
+    
+    return (
+      <div>
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: green[500], marginRight: "4px" }}>
+            <CheckCircleIcon style={{ fontSize: 18 }} />
+            <b> {greenCount}</b>
+          </span>
+          {redCount !== 0 && (
+            <span style={{ color: red[500], marginRight: "4px" }}>
+              <CancelIcon style={{ fontSize: 18 }} />
+              <b> {redCount} </b>
+            </span>
+          )}
+          
+        </span>
+      </div>
+    );
+  },
+},
 
-              </span>
-              <span style={{ color: red[500], marginRight: "4px" }}>
-                <CancelIcon style={{ fontSize: 18 }} />
-               <b> {redCount} </b> 
-
-              </span>
-              <span style={{ color: red[500], marginRight: "4px" }}>
-              {(redCount > greenCount || redCount !== 0)  && (
-                <ReportProblemIcon style={{ color:  orange[500], fontSize: 18 }} />
-              )}
-              </span>
-
-              </span>
-
-          </div>
-        );
-      },
-    },
    
     {
       name: "Actions",
